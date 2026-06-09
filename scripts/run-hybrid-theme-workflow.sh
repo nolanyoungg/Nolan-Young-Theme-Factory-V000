@@ -162,18 +162,70 @@ configure_ollama() {
 }
 
 configure_codex() {
-  local command_value="${CODEX_COMMAND:-codex}"
-  if is_interactive; then
-    command_value="$(ask_default "Enter Codex command" "$command_value")"
+  local use_guided="y"
+  local command_value
+  local command_name
+
+  if ! is_interactive && [ -n "${CODEX_COMMAND:-}" ] && [ -z "${CODEX_EXECUTABLE:-}" ] && [ -z "${CODEX_MODEL:-}" ] && [ -z "${CODEX_REASONING:-}" ] && [ -z "${CODEX_EXTRA_ARGS:-}" ]; then
+    command_value="$CODEX_COMMAND"
+    command_name="${command_value%% *}"
+    [ -n "$command_name" ] || fail "Codex command cannot be empty"
+    command -v "$command_name" >/dev/null 2>&1 || fail "Codex command not found: $command_name"
+    SELECTED_CODEX_MODEL=""
+    SELECTED_CODEX_REASONING=""
+    printf '%s\n' "$command_value"
+    return
   fi
 
-  local command_name="${command_value%% *}"
-  [ -n "$command_name" ] || fail "Codex command cannot be empty"
-  command -v "$command_name" >/dev/null 2>&1 || fail "Codex command not found: $command_name"
+  if is_interactive; then
+    read -r -p "Use guided Codex configuration with model and reasoning prompts? [Y/n]: " use_guided
+    use_guided="${use_guided:-y}"
+  fi
 
-  printf '\nSelected Codex command:\n%s\n' "$command_value" >&2
-  if is_interactive && ! confirm "Continue with this Codex command?" "y"; then
-    fail "Codex command was not confirmed."
+  if [[ "$use_guided" =~ ^[Nn]$|^[Nn][Oo]$ ]]; then
+    command_value="${CODEX_COMMAND:-codex}"
+    if is_interactive; then
+      command_value="$(ask_default "Enter full Codex command" "$command_value")"
+    fi
+    command_name="${command_value%% *}"
+    [ -n "$command_name" ] || fail "Codex command cannot be empty"
+    command -v "$command_name" >/dev/null 2>&1 || fail "Codex command not found: $command_name"
+    SELECTED_CODEX_MODEL="${CODEX_MODEL:-}"
+    SELECTED_CODEX_REASONING="${CODEX_REASONING:-}"
+  else
+    local codex_executable="${CODEX_EXECUTABLE:-${CODEX_COMMAND:-codex}}"
+    local codex_model="${CODEX_MODEL:-gpt-5.5}"
+    local codex_reasoning="${CODEX_REASONING:-high}"
+    local codex_extra_args="${CODEX_EXTRA_ARGS:-}"
+
+    if is_interactive; then
+      codex_executable="$(ask_default "Enter Codex executable" "${CODEX_EXECUTABLE:-${CODEX_COMMAND:-codex}}")"
+      codex_model="$(ask_default "Enter Codex model" "${CODEX_MODEL:-gpt-5.5}")"
+      codex_reasoning="$(ask_default "Enter Codex reasoning level" "${CODEX_REASONING:-high}")"
+      codex_extra_args="$(ask_default "Enter additional Codex arguments (optional)" "${CODEX_EXTRA_ARGS:-}")"
+    fi
+
+    command_name="${codex_executable%% *}"
+    [ -n "$command_name" ] || fail "Codex executable cannot be empty"
+    command -v "$command_name" >/dev/null 2>&1 || fail "Codex command not found: $command_name"
+
+    command_value="$codex_executable --model \"$codex_model\" --reasoning \"$codex_reasoning\""
+    if [ -n "$codex_extra_args" ]; then
+      command_value="$command_value $codex_extra_args"
+    fi
+
+    SELECTED_CODEX_MODEL="$codex_model"
+    SELECTED_CODEX_REASONING="$codex_reasoning"
+  fi
+
+  printf '\nSelected Codex configuration:\n' >&2
+  printf '  command: %s\n' "$command_value" >&2
+  printf '  model: %s\n' "${SELECTED_CODEX_MODEL:-not specified}" >&2
+  printf '  reasoning: %s\n' "${SELECTED_CODEX_REASONING:-not specified}" >&2
+  if is_interactive; then
+    local confirmation
+    read -r -p "Type continue to proceed with this Codex configuration: " confirmation
+    [[ "$confirmation" == "continue" ]] || fail "Codex configuration was not confirmed."
   fi
 
   printf '%s\n' "$command_value"
@@ -193,6 +245,8 @@ write_metadata() {
     printf 'THEME_PROMPT_FILE=%q\n' "$prompt_file"
     printf 'OLLAMA_MODEL=%q\n' "$ollama_model"
     printf 'CODEX_COMMAND=%q\n' "$codex_command"
+    printf 'CODEX_MODEL=%q\n' "${SELECTED_CODEX_MODEL:-}"
+    printf 'CODEX_REASONING=%q\n' "${SELECTED_CODEX_REASONING:-}"
     printf 'RUN_STARTED_AT=%q\n' "$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
   } > "$run_dir/metadata.env"
 }
@@ -281,11 +335,17 @@ printf 'Next theme slug: %s\n' "$theme_slug"
 ollama_model=""
 codex_command=""
 
-if [ "$mode" = "hybrid" ] || [ "$mode" = "ollama" ]; then
-  if ! ollama_model="$(configure_ollama)"; then
-    printf 'Ollama is unavailable or not configured correctly.\n' >&2
-    if [ "$mode" = "hybrid" ] && is_interactive && confirm "Switch to Codex-only mode?" "y"; then
-      mode="codex"
+  if [ "$mode" = "hybrid" ] || [ "$mode" = "ollama" ]; then
+    if ! ollama_model="$(configure_ollama)"; then
+      printf 'Ollama is unavailable or not configured correctly.\n' >&2
+      if [ "$mode" = "hybrid" ] && is_interactive; then
+        switch_answer=""
+        read -r -p "Type codex to switch to Codex-only mode, or press Enter to stop: " switch_answer
+        if [[ "$switch_answer" =~ ^[Cc][Oo][Dd][Ee][Xx]$ ]]; then
+          mode="codex"
+        else
+          fail "Cannot continue with Ollama mode without an installed Ollama model."
+      fi
     else
       fail "Cannot continue with Ollama mode without an installed Ollama model."
     fi
@@ -295,6 +355,8 @@ fi
 if [ "$mode" = "hybrid" ] || [ "$mode" = "codex" ]; then
   codex_command="$(configure_codex)"
   export CODEX_COMMAND="$codex_command"
+  export CODEX_MODEL="${SELECTED_CODEX_MODEL:-}"
+  export CODEX_REASONING="${SELECTED_CODEX_REASONING:-}"
 fi
 
 write_metadata "$mode" "$theme_slug" "$prompt_file" "$ollama_model" "$codex_command"

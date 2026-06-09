@@ -47,6 +47,14 @@ For Codex modes, confirm the command at runtime or set `CODEX_COMMAND`, for exam
 CODEX_COMMAND="codex --model gpt-5.5 --reasoning high" bash scripts/run-hybrid-theme-workflow.sh
 ```
 
+Interactive Codex runs now prompt for:
+- the Codex command or executable
+- the Codex model
+- the reasoning level
+- optional extra Codex arguments
+
+Noninteractive overrides also support `CODEX_EXECUTABLE`, `CODEX_MODEL`, `CODEX_REASONING`, and `CODEX_EXTRA_ARGS` when you want the script to build the Codex command for you.
+
 ## Noninteractive Overrides
 
 ```bash

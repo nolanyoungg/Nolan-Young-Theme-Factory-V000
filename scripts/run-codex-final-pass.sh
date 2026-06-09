@@ -86,5 +86,27 @@ fi
   sed -n '1,$p' "$prompt_file"
 } >> "$assembled"
 
+run_codex_with_prompt() {
+  local command_string="$1"
+  local prompt_path="$2"
+
+  command -v expect >/dev/null 2>&1 || fail "expect is required to run Codex in a terminal-backed session."
+
+CODEX_COMMAND_STRING="$command_string" CODEX_PROMPT_FILE="$prompt_path" expect <<'EOF'
+set timeout -1
+log_user 1
+set command_string $env(CODEX_COMMAND_STRING)
+set prompt_file $env(CODEX_PROMPT_FILE)
+set fh [open $prompt_file r]
+set prompt_data [read $fh]
+close $fh
+spawn bash -lc "$command_string"
+after 250
+send -- $prompt_data
+send -- "\004"
+expect eof
+EOF
+}
+
 printf 'Running Codex %s pass with command: %s\n' "$mode" "$codex_command"
-bash -lc "$codex_command" < "$assembled"
+run_codex_with_prompt "$codex_command" "$assembled"

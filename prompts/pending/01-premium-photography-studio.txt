@@ -1,0 +1,40 @@
+Create a premium classic WordPress theme for a boutique photography studio.
+
+The brand should feel editorial, warm, cinematic, and high-end. Build a complete, installable classic WordPress theme with polished responsive layouts and a matching static GitHub Pages preview.
+
+Required site sections and pages:
+- Home
+- About Us
+- Services
+- Work
+- Blog
+- Contact
+- Policies
+
+Homepage requirements:
+- Strong hero with a clear brand statement and booking-oriented CTA
+- Featured work section
+- Services overview
+- Process or approach section
+- Testimonials
+- Blog or journal preview
+- Final contact or booking CTA
+
+Design direction:
+- Use local assets only
+- Avoid remote CDNs, external fonts, and stock-looking filler
+- Use real, specific copy with a refined visual system
+- Make navigation, spacing, typography, and image treatment feel polished and intentional
+
+Content requirements:
+- Write believable copy for a real studio, not placeholder text
+- Include service details, work examples, contact language, and policy content
+- Keep the tone professional, confident, and human
+
+Build and output requirements:
+- Produce a complete classic WordPress theme with compiled local assets
+- Produce a matching static preview for GitHub Pages
+- Package the theme as a ZIP ready for WordPress upload
+- Validate structure, quality, security, preview linkage, and ZIP freshness
+
+Do not use lorem ipsum, TODO placeholders, or weak fallback pages.
