@@ -21,7 +21,16 @@ zip_path="dist/zipped-themes/$theme_slug.zip"
 [ -f "$zip_path" ] || fail "ZIP missing: $zip_path"
 command -v unzip >/dev/null 2>&1 || fail "unzip is required to inspect ZIP contents."
 
-unzip -Z1 "$zip_path" | grep -qx "$theme_slug/style.css" || fail "ZIP does not contain $theme_slug/style.css"
+found_style=0
+while IFS= read -r entry; do
+  if [ "$entry" = "$theme_slug/style.css" ]; then
+    found_style=1
+    break
+  fi
+done < <(unzip -Z1 "$zip_path")
+
+[ "$found_style" -eq 1 ] || fail "ZIP does not contain $theme_slug/style.css"
+
 if unzip -Z1 "$zip_path" | grep -E '(^|/)node_modules/|(^|/)\.git/' >/dev/null; then
   fail "ZIP contains node_modules or .git"
 fi
