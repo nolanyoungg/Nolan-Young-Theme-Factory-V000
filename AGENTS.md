@@ -1,26 +1,41 @@
 # Repository Guidelines
 
-## Purpose
-Nolan Young Theme Factory is an AI-assisted WordPress theme factory. It turns user prompt files into complete, installable classic WordPress themes, matching static GitHub Pages previews, ZIP packages, and run reports.
+This repository is intentionally small.
 
-## Prompt Authority
-The selected file in `prompts/pending/` is the source of truth. Do not rewrite, summarize, compress, or replace it before sending it to Ollama or Codex. Short prompts require intelligent completion. Long prompts require close preservation of requested structure, copy, tone, pages, and design direction.
+## Primary Workflow
 
-## Run Modes
-Ollama stages are local draft generators for planning, theme construction, preview creation, and local repair. Codex is the final senior engineering pass in Hybrid mode and the complete generator in Codex-only mode. Ollama-only mode must still attempt a complete result without Codex.
+Use `bash scripts/run-theme-workflow.sh`.
 
-## Hard Contracts
-Files in `contracts/` are requirements, not suggestions. Generated output must satisfy the theme structure, preview structure, file-block protocol, versioning, security, quality, and release artifact rules.
+The workflow should:
+- choose a prompt from `prompts/pending/`
+- choose a Codex model and reasoning level
+- generate a classic WordPress theme under `wp-content/themes/<slug>/`
+- generate a static preview under `docs/themes/<slug>/`
+- package the theme ZIP under `dist/zipped-themes/`
+- run `bash scripts/validate-theme.sh <slug>`
 
-## Required Output Paths
-Each successful run must produce:
-- `wp-content/themes/nolan-showcase-theme-XX/`
-- `docs/themes/nolan-showcase-theme-XX/`
-- `dist/zipped-themes/nolan-showcase-theme-XX.zip`
-- `reports/runs/nolan-showcase-theme-XX/`
+## Prompt Rules
 
-## Quality Bar
-Generated themes must be complete websites with real content, polished responsive design, compiled local assets, WordPress template coverage, accessibility basics, and a usable static preview. Do not include filler copy, unfinished placeholder files, remote CDN dependencies, secrets, API keys, or weak fallback output.
+Prompt files are authoritative. Do not rewrite, summarize, or compress the selected prompt before giving it to Codex.
+
+## Theme Rules
+
+Generated themes must be complete enough to install in WordPress:
+- valid `style.css` theme header
+- non-empty `functions.php`
+- core templates such as `index.php`, `header.php`, `footer.php`, `page.php`, and `single.php`
+- local compiled CSS and JS
+- no secrets, API keys, CDNs, or remote runtime dependencies
+- no lorem ipsum, TODO markers, or placeholder copy
+
+## Preview Rules
+
+Each theme needs a static preview at `docs/themes/<slug>/index.html`, with local CSS and JS. Link it from `docs/index.html`.
 
 ## Definition of Done
-A run is done when the theme builds with `npm run build`, the ZIP is packaged, `bash scripts/validate-all.sh <theme-slug>` passes, the preview is linked from `docs/index.html`, reports are written, and final paths plus next Git commands are printed.
+
+A theme is ready when:
+- `bash scripts/validate-theme.sh <slug>` passes
+- `dist/zipped-themes/<slug>.zip` exists
+- the ZIP contains `<slug>/style.css`
+- the preview works from `docs/themes/<slug>/index.html`

@@ -1,98 +1,92 @@
 # Nolan Young Theme Factory
 
-Nolan Young Theme Factory is a hybrid local-AI and Codex workflow for generating complete, polished, installable classic WordPress themes from prompt files. It supports local Ollama drafting, Codex finalization, Codex-only generation, and Ollama-only experimentation.
+A small Codex-powered WordPress theme factory.
 
-## Repository Structure
-- `prompts/pending/`: user `.txt` or `.md` theme briefs waiting to run.
-- `wp-content/themes/`: generated WordPress themes.
-- `docs/themes/`: static GitHub Pages previews.
-- `dist/zipped-themes/`: packaged WordPress upload ZIPs.
-- `reports/runs/`: assembled prompts, raw model output, validation logs, and summaries.
-- `agents/`, `instructions/`, `contracts/`, `codex/`: model guidance and hard requirements.
+Put a prompt in `prompts/pending/`, run one script, and receive:
+- an installable classic WordPress theme in `wp-content/themes/`
+- a static preview in `docs/themes/`
+- a WordPress upload ZIP in `dist/zipped-themes/`
 
-## Required Tools
-Install Git, Bash or PowerShell, Node/npm, and `zip`. Ollama is optional but required for Hybrid and Ollama-only modes. Codex is optional but required for Hybrid and Codex-only modes. PHP is optional; validation uses it for syntax checks when available.
+The first generated theme is already present:
+- Theme: `wp-content/themes/nolan-showcase-theme-01/`
+- Preview: `docs/themes/nolan-showcase-theme-01/index.html`
+- ZIP: `dist/zipped-themes/nolan-showcase-theme-01.zip`
 
-## Add a Prompt
-Place a prompt file in `prompts/pending/`, for example:
+## Requirements
+
+- Git
+- Bash
+- Node/npm, for generated theme builds
+- `zip` and `unzip`
+- Codex CLI
+- PHP is optional; validation uses `php -l` when available
+
+## Run
 
 ```bash
-cp my-theme.txt prompts/pending/my-theme.txt
+bash scripts/run-theme-workflow.sh
 ```
 
-Do not put secrets, API keys, passwords, or private credentials in prompts.
+The script asks for:
+- a prompt file from `prompts/pending/`
+- a Codex model: `gpt-5.5`, `gpt-5.4`, or `gpt-5.4-mini`
+- a reasoning level: `low`, `medium`, `high`, or `xhigh`
 
-## Run the Factory
+Defaults:
+- model: `gpt-5.4-mini`
+- reasoning: `low`
 
-```bash
-bash scripts/run-hybrid-theme-workflow.sh
-```
-
-Choose one mode:
-
-1. Hybrid: Ollama drafts the theme and Codex performs the final engineering pass.
-2. Codex only: Codex performs complete generation and finalization.
-3. Ollama only: Ollama performs local generation without Codex.
-
-## Model Selection
-For Ollama modes, the script runs `ollama list` and requires selection of an installed model. Pull a model with:
+Noninteractive example:
 
 ```bash
-ollama pull <model>
-```
-
-For Codex modes, confirm the command at runtime or set `CODEX_COMMAND`, for example:
-
-```bash
-CODEX_EXECUTABLE=codex CODEX_MODEL=gpt-5.4-mini CODEX_REASONING=low bash scripts/run-hybrid-theme-workflow.sh
-```
-
-Interactive Codex runs now prompt for:
-- the Codex command or executable
-- the Codex model: `gpt-5.5`, `gpt-5.4`, or `gpt-5.4-mini`
-- the reasoning level: `low`, `medium`, `high`, or `xhigh`
-- optional extra Codex arguments
-
-The default guided Codex selection is `gpt-5.4-mini` with `low` reasoning. The workflow passes reasoning through Codex config with `-c reasoning_effort="..."`.
-
-Noninteractive overrides also support `CODEX_EXECUTABLE`, `CODEX_MODEL`, `CODEX_REASONING`, and `CODEX_EXTRA_ARGS` when you want the script to build the Codex command for you.
-
-## Noninteractive Overrides
-
-```bash
-THEME_FACTORY_MODE=codex \
-THEME_PROMPT_FILE=prompts/pending/my-theme.txt \
-CODEX_EXECUTABLE=codex \
+THEME_PROMPT_FILE=prompts/pending/01-premium-photography-studio.txt \
 CODEX_MODEL=gpt-5.4-mini \
 CODEX_REASONING=low \
+bash scripts/run-theme-workflow.sh
+```
+
+The old command still works as a wrapper:
+
+```bash
 bash scripts/run-hybrid-theme-workflow.sh
 ```
 
-Supported variables: `THEME_FACTORY_MODE=hybrid|codex|ollama`, `THEME_PROMPT_FILE`, `OLLAMA_MODEL`, `CODEX_COMMAND`, `CODEX_EXECUTABLE`, `CODEX_MODEL`, `CODEX_REASONING`, `CODEX_EXTRA_ARGS`, `SKIP_CODEX_FINAL=1`, `SKIP_OLLAMA_REVIEW_FIX=1`, `SKIP_NPM_BUILD=1`, `SKIP_PACKAGE=1`, and `SKIP_VALIDATE=1`.
-
-## Outputs
-Each run creates a new slug such as `nolan-showcase-theme-01`, then writes the WordPress theme, static preview, packaged ZIP, and reports to the required output paths.
-
-## Manual Validation
+## Validate
 
 ```bash
-bash scripts/validate-all.sh nolan-showcase-theme-01
+bash scripts/validate-theme.sh nolan-showcase-theme-01
 ```
 
-If no themes exist, `bash scripts/validate-all.sh` performs starter repo checks and exits cleanly.
+Or:
 
-## GitHub Pages and ZIPs
-`docs/index.html` is the preview gallery. Generated previews are linked from that page and deployed by `.github/workflows/deploy-preview.yml`. ZIP packages are written to `dist/zipped-themes/` and contain the theme folder itself for normal WordPress upload.
+```bash
+bash scripts/validate-all.sh
+```
 
-## Troubleshooting
-- `Ollama not found`: install Ollama or use Codex-only mode.
-- `Ollama model not installed`: run `ollama list`, then `ollama pull <model>`.
-- `Codex command not found`: install or configure Codex, or enter the correct command.
-- `npm missing`: install Node.js with npm.
-- `zip missing`: install the `zip` command-line tool.
-- `validation failed`: read `reports/runs/<theme-slug>/validation-latest.txt`.
-- `no prompt files found`: add a `.txt` or `.md` file to `prompts/pending/`.
-- `PHP unavailable`: PHP syntax checks are skipped, but other validation still runs.
+## Package
 
-## Security Notes
-Generated themes must not include secrets, API keys, remote scripts, CDN dependencies, private keys, or credential-like strings. The validator blocks common unsafe PHP functions and suspicious embedded secrets.
+```bash
+bash scripts/package-theme.sh nolan-showcase-theme-01
+```
+
+The ZIP is written to `dist/zipped-themes/<theme-slug>.zip`.
+
+## Push
+
+After validation passes:
+
+```bash
+git status
+git add .
+git commit -m "Add nolan-showcase-theme-01"
+git push origin main
+```
+
+## Repository Layout
+
+- `prompts/pending/`: prompt files ready to run
+- `prompts/completed/`: prompt files after successful runs
+- `wp-content/themes/`: generated WordPress themes
+- `docs/`: GitHub Pages gallery and static previews
+- `dist/zipped-themes/`: packaged upload ZIPs
+- `scripts/`: generation, packaging, and validation scripts

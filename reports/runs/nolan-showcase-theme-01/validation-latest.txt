@@ -1,6 +1,0 @@
-Theme structure validation passed for nolan-showcase-theme-01.
-FAIL: Theme lacks service content markers
-FAIL: Theme lacks work or portfolio content markers
-FAIL: Theme lacks testimonial or client content markers
-FAIL: Theme lacks contact or conversion content markers
-Theme quality validation failed with 4 issue(s).
