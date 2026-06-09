@@ -94,20 +94,20 @@ write_codex_prompt() {
     printf '# Theme Generation Task\n\n'
     printf 'Create or repair the WordPress theme `%s` in this repository.\n\n' "$slug"
     printf 'Required output paths:\n'
-    printf '- `wp-content/themes/%s/`\n' "$slug"
-    printf '- `docs/themes/%s/`\n' "$slug"
-    printf '- update `docs/index.html` with a link to `themes/%s/index.html`\n\n' "$slug"
+    printf '%s\n' "- \`wp-content/themes/$slug/\`"
+    printf '%s\n' "- \`docs/themes/$slug/\`"
+    printf '%s\n\n' "- update \`docs/index.html\` with a link to \`themes/$slug/index.html\`"
     printf 'Theme requirements:\n'
-    printf '- classic WordPress theme\n'
-    printf '- valid `style.css` theme header\n'
-    printf '- non-empty `functions.php`\n'
-    printf '- local CSS and JS in `assets/css/bundle.css` and `assets/js/bundle.js`\n'
-    printf '- `package.json` with a working `npm run build`\n'
-    printf '- no secrets, API keys, CDNs, remote scripts, lorem ipsum, TODOs, or placeholder copy\n\n'
+    printf '%s\n' '- classic WordPress theme'
+    printf '%s\n' '- valid `style.css` theme header'
+    printf '%s\n' '- non-empty `functions.php`'
+    printf '%s\n' '- local CSS and JS in `assets/css/bundle.css` and `assets/js/bundle.js`'
+    printf '%s\n' '- `package.json` with a working `npm run build`'
+    printf '%s\n\n' '- no secrets, API keys, CDNs, remote scripts, lorem ipsum, TODOs, or placeholder copy'
     printf 'Preview requirements:\n'
-    printf '- static HTML preview at `docs/themes/%s/index.html`\n' "$slug"
-    printf '- local preview CSS and JS\n'
-    printf '- usable without WordPress or PHP\n\n'
+    printf '%s\n' "- static HTML preview at \`docs/themes/$slug/index.html\`"
+    printf '%s\n' '- local preview CSS and JS'
+    printf '%s\n\n' '- usable without WordPress or PHP'
     printf 'Selected Codex model: %s\n' "${SELECTED_CODEX_MODEL:-unknown}"
     printf 'Selected reasoning: %s\n\n' "${SELECTED_CODEX_REASONING:-unknown}"
     printf 'Use the user prompt below verbatim as the source brief.\n\n'
