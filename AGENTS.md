@@ -37,7 +37,7 @@ The static preview should closely mirror the WordPress theme: same visual system
 
 ## Pull Request Flow
 
-After validation, `scripts/create-theme-pr.sh <slug>` can create a branch, commit generated theme output, push it, and open a GitHub PR. It stages only the theme directory, preview directory, ZIP, and `docs/index.html`.
+After validation, `scripts/run-theme-workflow.sh` automatically calls `scripts/create-theme-pr.sh <slug>` to create a branch, commit generated theme output, push it, and open a GitHub PR. It stages only the theme directory, preview directory, ZIP, and `docs/index.html`. Set `SKIP_THEME_PR=1` only for local-only test runs.
 
 ## Definition of Done
 

@@ -38,29 +38,6 @@ choose_from_menu() {
   done
 }
 
-ask_yes_no() {
-  local question="$1"
-  local default_answer="$2"
-  local answer
-  local prompt
-
-  case "$default_answer" in
-    y|Y) prompt="[Y/n]" ;;
-    n|N) prompt="[y/N]" ;;
-    *) fail "Invalid yes/no default: $default_answer" ;;
-  esac
-
-  while true; do
-    read -r -p "$question $prompt: " answer
-    answer="${answer:-$default_answer}"
-    case "$answer" in
-      y|Y|yes|YES) return 0 ;;
-      n|N|no|NO) return 1 ;;
-      *) printf 'Please answer y or n.\n' >&2 ;;
-    esac
-  done
-}
-
 select_prompt() {
   if [ -n "${THEME_PROMPT_FILE:-}" ]; then
     [ -f "$THEME_PROMPT_FILE" ] || fail "Prompt file not found: $THEME_PROMPT_FILE"
@@ -158,21 +135,24 @@ run_npm_build() {
 maybe_create_theme_pr() {
   local slug="$1"
 
-  case "${CREATE_THEME_PR:-}" in
+  case "${SKIP_THEME_PR:-}" in
     1|true|TRUE|yes|YES)
-      bash scripts/create-theme-pr.sh "$slug"
-      return
-      ;;
-    0|false|FALSE|no|NO)
+      printf 'Skipping PR creation because SKIP_THEME_PR is set.\n'
       return
       ;;
   esac
 
-  if is_interactive; then
-    if ask_yes_no "Validate, push a branch, and open a PR for $slug?" "y"; then
+  case "${CREATE_THEME_PR:-auto}" in
+    auto|1|true|TRUE|yes|YES)
+      printf 'Validation passed. Creating GitHub PR for %s.\n' "$slug"
       bash scripts/create-theme-pr.sh "$slug"
-    fi
-  fi
+      ;;
+    0|false|FALSE|no|NO)
+      printf 'Skipping PR creation because CREATE_THEME_PR is disabled.\n'
+      return
+      ;;
+    *) fail "Invalid CREATE_THEME_PR value: $CREATE_THEME_PR" ;;
+  esac
 }
 
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
