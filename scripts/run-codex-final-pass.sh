@@ -59,6 +59,15 @@ append_file "$assembled" "Security Rules" "contracts/security-rules.md"
 append_file "$assembled" "Quality Rules" "contracts/quality-rules.md"
 append_file "$assembled" "Release Artifact Rules" "contracts/release-artifact-rules.md"
 
+[ -n "${CODEX_MODEL:-}" ] || CODEX_MODEL="not specified"
+[ -n "${CODEX_REASONING:-}" ] || CODEX_REASONING="not specified"
+
+{
+  printf '\n\n## Selected Codex Configuration\n\n'
+  printf 'Model: %s\n' "$CODEX_MODEL"
+  printf 'Reasoning level: %s\n' "$CODEX_REASONING"
+} >> "$assembled"
+
 [ -f "$run_dir/plan.md" ] && append_file "$assembled" "Existing Plan" "$run_dir/plan.md"
 [ -f "$run_dir/validation-latest.txt" ] && append_file "$assembled" "Validation Output" "$run_dir/validation-latest.txt"
 
@@ -90,22 +99,7 @@ run_codex_with_prompt() {
   local command_string="$1"
   local prompt_path="$2"
 
-  command -v expect >/dev/null 2>&1 || fail "expect is required to run Codex in a terminal-backed session."
-
-CODEX_COMMAND_STRING="$command_string" CODEX_PROMPT_FILE="$prompt_path" expect <<'EOF'
-set timeout -1
-log_user 1
-set command_string $env(CODEX_COMMAND_STRING)
-set prompt_file $env(CODEX_PROMPT_FILE)
-set fh [open $prompt_file r]
-set prompt_data [read $fh]
-close $fh
-spawn bash -lc "$command_string"
-after 250
-send -- $prompt_data
-send -- "\004"
-expect eof
-EOF
+  bash -lc "$command_string -" < "$prompt_path"
 }
 
 printf 'Running Codex %s pass with command: %s\n' "$mode" "$codex_command"

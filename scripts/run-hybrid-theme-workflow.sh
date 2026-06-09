@@ -193,23 +193,41 @@ configure_codex() {
     SELECTED_CODEX_MODEL="${CODEX_MODEL:-}"
     SELECTED_CODEX_REASONING="${CODEX_REASONING:-}"
   else
-    local codex_executable="${CODEX_EXECUTABLE:-${CODEX_COMMAND:-codex}}"
+    local codex_executable="${CODEX_EXECUTABLE:-codex}"
     local codex_model="${CODEX_MODEL:-gpt-5.5}"
     local codex_reasoning="${CODEX_REASONING:-high}"
     local codex_extra_args="${CODEX_EXTRA_ARGS:-}"
 
     if is_interactive; then
-      codex_executable="$(ask_default "Enter Codex executable" "${CODEX_EXECUTABLE:-${CODEX_COMMAND:-codex}}")"
+      codex_executable="$(ask_default "Enter Codex executable" "${CODEX_EXECUTABLE:-codex}")"
       codex_model="$(ask_default "Enter Codex model" "${CODEX_MODEL:-gpt-5.5}")"
       codex_reasoning="$(ask_default "Enter Codex reasoning level" "${CODEX_REASONING:-high}")"
       codex_extra_args="$(ask_default "Enter additional Codex arguments (optional)" "${CODEX_EXTRA_ARGS:-}")"
+    elif [ -n "${CODEX_COMMAND:-}" ] && [ -z "${CODEX_EXECUTABLE:-}" ] && [ -z "${CODEX_MODEL:-}" ] && [ -z "${CODEX_REASONING:-}" ] && [ -z "${CODEX_EXTRA_ARGS:-}" ]; then
+      command_value="$CODEX_COMMAND"
+      command_name="${command_value%% *}"
+      [ -n "$command_name" ] || fail "Codex command cannot be empty"
+      command -v "$command_name" >/dev/null 2>&1 || fail "Codex command not found: $command_name"
+      SELECTED_CODEX_MODEL=""
+      SELECTED_CODEX_REASONING=""
+      printf '\nSelected Codex configuration:\n' >&2
+      printf '  command: %s\n' "$command_value" >&2
+      printf '  model: %s\n' "not specified" >&2
+      printf '  reasoning: %s\n' "not specified" >&2
+      if is_interactive; then
+        local confirmation
+        read -r -p "Type continue to proceed with this Codex configuration: " confirmation
+        [[ "$confirmation" == "continue" ]] || fail "Codex configuration was not confirmed."
+      fi
+      printf '%s\n' "$command_value"
+      return
     fi
 
     command_name="${codex_executable%% *}"
     [ -n "$command_name" ] || fail "Codex executable cannot be empty"
     command -v "$command_name" >/dev/null 2>&1 || fail "Codex command not found: $command_name"
 
-    command_value="$codex_executable --model \"$codex_model\" --reasoning \"$codex_reasoning\""
+    command_value="$codex_executable exec --model \"$codex_model\" --sandbox workspace-write"
     if [ -n "$codex_extra_args" ]; then
       command_value="$command_value $codex_extra_args"
     fi
@@ -345,7 +363,7 @@ codex_command=""
           mode="codex"
         else
           fail "Cannot continue with Ollama mode without an installed Ollama model."
-      fi
+        fi
     else
       fail "Cannot continue with Ollama mode without an installed Ollama model."
     fi

@@ -44,7 +44,7 @@ ollama pull <model>
 For Codex modes, confirm the command at runtime or set `CODEX_COMMAND`, for example:
 
 ```bash
-CODEX_COMMAND="codex --model gpt-5.5 --reasoning high" bash scripts/run-hybrid-theme-workflow.sh
+CODEX_COMMAND="codex exec --model gpt-5.5 --sandbox workspace-write" bash scripts/run-hybrid-theme-workflow.sh
 ```
 
 Interactive Codex runs now prompt for:
@@ -52,6 +52,7 @@ Interactive Codex runs now prompt for:
 - the Codex model
 - the reasoning level
 - optional extra Codex arguments
+  - The current Codex CLI exposes model selection directly; reasoning is captured in the assembled prompt and run metadata because there is no dedicated reasoning flag in this version of the CLI.
 
 Noninteractive overrides also support `CODEX_EXECUTABLE`, `CODEX_MODEL`, `CODEX_REASONING`, and `CODEX_EXTRA_ARGS` when you want the script to build the Codex command for you.
 
@@ -60,11 +61,13 @@ Noninteractive overrides also support `CODEX_EXECUTABLE`, `CODEX_MODEL`, `CODEX_
 ```bash
 THEME_FACTORY_MODE=codex \
 THEME_PROMPT_FILE=prompts/pending/my-theme.txt \
-CODEX_COMMAND="codex" \
+CODEX_EXECUTABLE=codex \
+CODEX_MODEL=gpt-5.5 \
+CODEX_REASONING=high \
 bash scripts/run-hybrid-theme-workflow.sh
 ```
 
-Supported variables: `THEME_FACTORY_MODE=hybrid|codex|ollama`, `THEME_PROMPT_FILE`, `OLLAMA_MODEL`, `CODEX_COMMAND`, `SKIP_CODEX_FINAL=1`, `SKIP_OLLAMA_REVIEW_FIX=1`, `SKIP_NPM_BUILD=1`, `SKIP_PACKAGE=1`, and `SKIP_VALIDATE=1`.
+Supported variables: `THEME_FACTORY_MODE=hybrid|codex|ollama`, `THEME_PROMPT_FILE`, `OLLAMA_MODEL`, `CODEX_COMMAND`, `CODEX_EXECUTABLE`, `CODEX_MODEL`, `CODEX_REASONING`, `CODEX_EXTRA_ARGS`, `SKIP_CODEX_FINAL=1`, `SKIP_OLLAMA_REVIEW_FIX=1`, `SKIP_NPM_BUILD=1`, `SKIP_PACKAGE=1`, and `SKIP_VALIDATE=1`.
 
 ## Outputs
 Each run creates a new slug such as `nolan-showcase-theme-01`, then writes the WordPress theme, static preview, packaged ZIP, and reports to the required output paths.
