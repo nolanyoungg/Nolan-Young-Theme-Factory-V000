@@ -64,17 +64,100 @@ a { color: inherit; text-decoration-thickness: 0.08em; text-underline-offset: 0.
   background: rgba(247, 242, 234, 0.84);
   border-bottom: 1px solid rgba(23, 32, 28, 0.08);
 }
-.header-bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 92px; }
+.header-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 96px;
+  padding-block: 0.75rem;
+}
 .brand-link { display: inline-flex; align-items: center; gap: .85rem; text-decoration: none; }
 .brand-link img { width: 48px; height: 48px; border-radius: 50%; box-shadow: var(--shadow-card); }
 .brand-link strong, h1, h2, h3 { line-height: 1.05; letter-spacing: -0.03em; }
 .brand-link span { display: grid; }
 .brand-link small, .kicker, .section-eyebrow, .nav, .button, .footer-widgets, .footer-links, .testimonial-card, .blog-card, .pillar-card, .service-card, .process-step { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
 .brand-link small { color: var(--color-olive); font-size: .82rem; }
-.site-nav { display: flex; flex-wrap: wrap; gap: .5rem 1rem; }
-.site-nav a { text-decoration: none; padding: .55rem 0; }
-.nav-toggle { display: none; width: 52px; height: 52px; border: 1px solid rgba(23, 32, 28, 0.16); border-radius: 999px; background: rgba(255,255,255,.8); }
-.nav-toggle span { display: block; width: 18px; height: 2px; margin: 4px auto; background: var(--color-ink); }
+.header-actions { display: flex; align-items: center; gap: .75rem; margin-left: auto; }
+.header-cta { white-space: nowrap; }
+.site-nav { flex: 1 1 100%; }
+.site-nav .nav-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem .75rem;
+  align-items: center;
+  list-style: none;
+  padding: .85rem 1rem;
+  margin: .75rem 0 0;
+  border: 1px solid rgba(23, 32, 28, 0.08);
+  border-radius: 999px;
+  background: rgba(255, 250, 243, 0.72);
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(18px);
+}
+.site-nav .menu-item { position: relative; }
+.site-nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  text-decoration: none;
+  padding: .6rem .95rem;
+  border-radius: 999px;
+  transition: color 180ms ease, background-color 180ms ease, transform 180ms ease;
+}
+.site-nav a:hover, .site-nav a:focus-visible, .site-nav .menu-item.is-open > a {
+  background: rgba(71, 87, 79, 0.08);
+  color: var(--color-bronze);
+  transform: translateY(-1px);
+}
+.site-nav .menu-item-has-children > a::after {
+  content: '';
+  width: .45rem;
+  height: .45rem;
+  margin-top: -.2rem;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform 180ms ease;
+}
+.site-nav .menu-item.is-open > a::after, .site-nav .menu-item:focus-within > a::after, .site-nav .menu-item:hover > a::after {
+  transform: rotate(225deg);
+}
+.site-nav .sub-menu {
+  position: absolute;
+  top: calc(100% + .7rem);
+  left: 0;
+  z-index: 50;
+  min-width: 240px;
+  padding: .75rem;
+  margin: 0;
+  list-style: none;
+  border: 1px solid rgba(23, 32, 28, 0.08);
+  border-radius: 20px;
+  background: rgba(255, 250, 243, 0.98);
+  box-shadow: var(--shadow-soft);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity 180ms ease, transform 180ms ease, visibility 180ms ease;
+}
+.site-nav .sub-menu a { width: 100%; justify-content: flex-start; border-radius: 14px; padding: .75rem .95rem; }
+.site-nav .menu-item:hover > .sub-menu, .site-nav .menu-item:focus-within > .sub-menu, .site-nav .menu-item.is-open > .sub-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.nav-toggle {
+  display: none;
+  width: 52px;
+  height: 52px;
+  border: 1px solid rgba(23, 32, 28, 0.16);
+  border-radius: 999px;
+  background: rgba(255,255,255,.8);
+}
+.nav-toggle__bar { display: block; width: 18px; height: 2px; margin: 4px auto; background: var(--color-ink); }
+.nav-toggle:hover, .nav-toggle:focus-visible, .header-cta:hover, .header-cta:focus-visible { box-shadow: var(--shadow-card); }
 .hero-section, .section { padding: 4rem 0; }
 .hero-grid { display: grid; grid-template-columns: repeat(12, minmax(0,1fr)); gap: 1.5rem; align-items: center; }
 .hero-copy { grid-column: 1 / span 6; }
@@ -155,11 +238,22 @@ textarea { min-height: 160px; resize: vertical; }
 .policy-card { padding: 1.25rem; }
 .button, .work-card, .service-card, .testimonial-card, .blog-card, .pillar-card, .process-step, .cta-banner, .policy-card { transition: transform 220ms ease, box-shadow 220ms ease; }
 .button:hover, .work-card:hover, .service-card:hover, .testimonial-card:hover, .blog-card:hover, .pillar-card:hover, .process-step:hover, .cta-banner:hover, .policy-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-soft); }
+@media (min-width: 861px) {
+  .site-nav { order: 3; }
+}
 @media (max-width: 860px) {
-  .nav-toggle { display: inline-block; }
-  .site-nav { display: none; width: 100%; padding-bottom: 1rem; }
+  .header-bar { align-items: flex-start; }
+  .header-actions { margin-left: auto; }
+  .header-cta { display: none; }
+  .nav-toggle { display: inline-grid; place-items: center; }
+  .site-nav { display: none; width: 100%; margin-top: .5rem; }
   .site-nav.is-open { display: flex; flex-direction: column; align-items: flex-start; }
+  .site-nav .nav-list { width: 100%; flex-direction: column; align-items: flex-start; border-radius: 24px; padding: 1rem; margin-top: 0; }
+  .site-nav .menu-item { width: 100%; }
+  .site-nav .sub-menu { position: static; width: 100%; min-width: 0; margin-top: .4rem; opacity: 1; visibility: visible; transform: none; display: none; padding: .35rem 0 .1rem; border: 0; background: transparent; box-shadow: none; }
+  .site-nav .menu-item.is-open > .sub-menu { display: grid; }
+  .site-nav .sub-menu a { padding-left: 1rem; }
+  .site-nav .menu-item-has-children > a::after { margin-left: auto; }
   .header-bar, .cta-banner, .hero-grid { grid-template-columns: 1fr; display: grid; }
   .hero-copy, .hero-visual, .contact-grid > * { grid-column: auto; }
 }
-

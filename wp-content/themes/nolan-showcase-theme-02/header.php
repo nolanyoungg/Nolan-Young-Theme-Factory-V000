@@ -26,12 +26,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</a>
 		</div>
 
-		<button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation">
-			<span class="nav-toggle__bar"></span>
-			<span class="nav-toggle__bar"></span>
-			<span class="nav-toggle__bar"></span>
-			<span class="screen-reader-text"><?php esc_html_e( 'Toggle navigation', 'nolan-showcase-theme-02' ); ?></span>
-		</button>
+		<div class="header-actions">
+			<a class="button button--ghost header-cta" href="<?php echo esc_url( home_url( '/#contact' ) ); ?>">
+				<?php esc_html_e( 'Book a date', 'nolan-showcase-theme-02' ); ?>
+			</a>
+			<button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="<?php esc_attr_e( 'Toggle navigation', 'nolan-showcase-theme-02' ); ?>">
+				<span class="nav-toggle__bar"></span>
+				<span class="nav-toggle__bar"></span>
+				<span class="nav-toggle__bar"></span>
+			</button>
+		</div>
 
 		<nav class="site-nav" id="primary-navigation" aria-label="<?php esc_attr_e( 'Primary', 'nolan-showcase-theme-02' ); ?>">
 			<?php
@@ -41,7 +45,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					'container'      => false,
 					'fallback_cb'    => 'nolan_primary_menu_fallback',
 					'menu_class'     => 'nav-list',
-					'depth'          => 1,
+					'depth'          => 2,
 				)
 			);
 			?>
@@ -49,4 +53,3 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</div>
 </header>
 <main id="content" class="site-content">
-

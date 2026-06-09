@@ -38,18 +38,44 @@ function nolan_inline_kicker( $label ) {
 
 function nolan_primary_menu_fallback() {
 	$items = array(
-		array( 'label' => __( 'Home', 'nolan-showcase-theme-02' ), 'url' => home_url( '/' ) ),
-		array( 'label' => __( 'Work', 'nolan-showcase-theme-02' ), 'url' => home_url( '/#work' ) ),
-		array( 'label' => __( 'Services', 'nolan-showcase-theme-02' ), 'url' => home_url( '/#services' ) ),
-		array( 'label' => __( 'Contact', 'nolan-showcase-theme-02' ), 'url' => home_url( '/contact/' ) ),
+		array(
+			'label'    => __( 'Home', 'nolan-showcase-theme-02' ),
+			'url'      => home_url( '/#home' ),
+			'children' => array(),
+		),
+		array(
+			'label'    => __( 'Explore', 'nolan-showcase-theme-02' ),
+			'url'      => home_url( '/#work' ),
+			'children' => array(
+				array( 'label' => __( 'Featured Work', 'nolan-showcase-theme-02' ), 'url' => home_url( '/#work' ) ),
+				array( 'label' => __( 'Services', 'nolan-showcase-theme-02' ), 'url' => home_url( '/#services' ) ),
+				array( 'label' => __( 'Journal', 'nolan-showcase-theme-02' ), 'url' => home_url( '/#blog' ) ),
+				array( 'label' => __( 'Contact', 'nolan-showcase-theme-02' ), 'url' => home_url( '/#contact' ) ),
+			),
+		),
+		array( 'label' => __( 'Contact', 'nolan-showcase-theme-02' ), 'url' => home_url( '/#contact' ) ),
 	);
 	echo '<ul class="nav-list">';
 	foreach ( $items as $item ) {
+		$has_children = ! empty( $item['children'] );
+		printf( '<li class="%s">', $has_children ? 'menu-item menu-item-has-children' : 'menu-item' );
 		printf(
-			'<li><a href="%1$s">%2$s</a></li>',
+			'<a href="%1$s">%2$s</a>',
 			esc_url( $item['url'] ),
 			esc_html( $item['label'] )
 		);
+		if ( $has_children ) {
+			echo '<ul class="sub-menu">';
+			foreach ( $item['children'] as $child ) {
+				printf(
+					'<li class="menu-item"><a href="%1$s">%2$s</a></li>',
+					esc_url( $child['url'] ),
+					esc_html( $child['label'] )
+				);
+			}
+			echo '</ul>';
+		}
+		echo '</li>';
 	}
 	echo '</ul>';
 }

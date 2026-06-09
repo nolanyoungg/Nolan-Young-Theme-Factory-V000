@@ -23,7 +23,8 @@ Prompt files are authoritative. Do not rewrite, summarize, or compress the selec
 Generated themes must be complete enough to install in WordPress:
 - valid `style.css` theme header
 - non-empty `functions.php`
-- core templates such as `index.php`, `header.php`, `footer.php`, `page.php`, and `single.php`
+- required root files: `style.css`, `functions.php`, `theme.json`, `screenshot.png`, `README.md`, `header.php`, `footer.php`, `front-page.php`, `index.php`, `page.php`, `single.php`, `archive.php`, `search.php`, `searchform.php`, `404.php`, `403.php`, `comments.php`, `package.json`, `package-lock.json`, `LICENSE.txt`, and `CHANGELOG.md`
+- required folders: `inc/`, `assets/`, `src/`, `template-parts/`, `page-templates/`, `blocks/`, `build/`, `docs/`, and `accessibility/`
 - local compiled CSS and JS
 - no secrets, API keys, CDNs, or remote runtime dependencies
 - no lorem ipsum, TODO markers, or placeholder copy

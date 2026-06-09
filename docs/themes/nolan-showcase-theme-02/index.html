@@ -17,16 +17,26 @@
             <small>Boutique photography studio</small>
           </span>
         </a>
-        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="preview-nav">
-          <span></span><span></span><span></span>
-          <span class="screen-reader-text">Toggle navigation</span>
-        </button>
+        <div class="header-actions">
+          <a class="button button--ghost header-cta" href="#contact">Book a date</a>
+          <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="preview-nav" aria-label="Toggle navigation">
+            <span class="nav-toggle__bar"></span><span class="nav-toggle__bar"></span><span class="nav-toggle__bar"></span>
+          </button>
+        </div>
         <nav id="preview-nav" class="site-nav" aria-label="Primary">
-          <a href="#work">Work</a>
-          <a href="#services">Services</a>
-          <a href="#process">Process</a>
-          <a href="#blog">Journal</a>
-          <a href="#contact">Contact</a>
+          <ul class="nav-list">
+            <li class="menu-item"><a href="#home">Home</a></li>
+            <li class="menu-item menu-item-has-children">
+              <a href="#work">Explore</a>
+              <ul class="sub-menu">
+                <li class="menu-item"><a href="#work">Featured work</a></li>
+                <li class="menu-item"><a href="#services">Services</a></li>
+                <li class="menu-item"><a href="#blog">Journal</a></li>
+                <li class="menu-item"><a href="#contact">Contact</a></li>
+              </ul>
+            </li>
+            <li class="menu-item"><a href="#contact">Contact</a></li>
+          </ul>
         </nav>
       </div>
     </header>

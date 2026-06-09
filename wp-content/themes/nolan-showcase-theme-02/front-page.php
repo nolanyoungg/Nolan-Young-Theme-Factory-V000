@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 get_header();
 ?>
-<section class="hero-section">
+<section id="home" class="hero-section">
 	<?php get_template_part( 'template-parts/content', 'hero' ); ?>
 </section>
 <section id="work" class="section section--featured-work">
@@ -30,4 +30,3 @@ get_header();
 </section>
 <?php
 get_footer();
-
