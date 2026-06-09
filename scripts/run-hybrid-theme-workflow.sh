@@ -58,10 +58,10 @@ choose_mode() {
 
   is_interactive || fail "THEME_FACTORY_MODE is required for noninteractive runs."
 
-  printf '\nChoose run mode:\n'
-  printf '  1. Hybrid: Ollama draft + Codex final pass\n'
-  printf '  2. Codex only: Codex handles complete generation\n'
-  printf '  3. Ollama only: Local Ollama generation only\n'
+  printf '\nChoose run mode:\n' >&2
+  printf '  1. Hybrid: Ollama draft + Codex final pass\n' >&2
+  printf '  2. Codex only: Codex handles complete generation\n' >&2
+  printf '  3. Ollama only: Local Ollama generation only\n' >&2
 
   local choice
   while true; do
@@ -89,17 +89,18 @@ choose_prompt_file() {
     prompts+=("$prompt_path")
   done < <(find prompts/pending -maxdepth 1 -type f \( -name '*.txt' -o -name '*.md' \) | sort)
   if [ "${#prompts[@]}" -eq 0 ]; then
-    printf 'No prompt files found in prompts/pending/.\n'
-    printf 'Add a .txt or .md prompt file to prompts/pending/ and rerun this script.\n'
-    exit 0
+    printf 'No prompt files found in prompts/pending/.\n' >&2
+    printf 'Add a .txt or .md prompt file to prompts/pending/ and rerun this script.\n' >&2
+    printf '__NO_PROMPTS__\n'
+    return 0
   fi
 
   is_interactive || fail "THEME_PROMPT_FILE is required for noninteractive runs."
 
-  printf '\nAvailable prompt files:\n'
+  printf '\nAvailable prompt files:\n' >&2
   local i
   for i in "${!prompts[@]}"; do
-    printf '  %s. %s\n' "$((i + 1))" "${prompts[$i]}"
+    printf '  %s. %s\n' "$((i + 1))" "${prompts[$i]}" >&2
   done
 
   local choice
@@ -266,6 +267,9 @@ validate_required_repo
 
 mode="$(choose_mode)"
 prompt_file="$(choose_prompt_file)"
+if [ "$prompt_file" = "__NO_PROMPTS__" ]; then
+  exit 0
+fi
 theme_slug="$(bash scripts/get-next-theme-version.sh)"
 run_dir="reports/runs/$theme_slug"
 mkdir -p "$run_dir"
