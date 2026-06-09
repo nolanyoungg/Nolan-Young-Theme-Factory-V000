@@ -38,6 +38,29 @@ choose_from_menu() {
   done
 }
 
+ask_yes_no() {
+  local question="$1"
+  local default_answer="$2"
+  local answer
+  local prompt
+
+  case "$default_answer" in
+    y|Y) prompt="[Y/n]" ;;
+    n|N) prompt="[y/N]" ;;
+    *) fail "Invalid yes/no default: $default_answer" ;;
+  esac
+
+  while true; do
+    read -r -p "$question $prompt: " answer
+    answer="${answer:-$default_answer}"
+    case "$answer" in
+      y|Y|yes|YES) return 0 ;;
+      n|N|no|NO) return 1 ;;
+      *) printf 'Please answer y or n.\n' >&2 ;;
+    esac
+  done
+}
+
 select_prompt() {
   if [ -n "${THEME_PROMPT_FILE:-}" ]; then
     [ -f "$THEME_PROMPT_FILE" ] || fail "Prompt file not found: $THEME_PROMPT_FILE"
@@ -103,11 +126,13 @@ write_codex_prompt() {
     printf '%s\n' '- non-empty `functions.php`'
     printf '%s\n' '- local CSS and JS in `assets/css/bundle.css` and `assets/js/bundle.js`'
     printf '%s\n' '- `package.json` with a working `npm run build`'
-    printf '%s\n\n' '- no secrets, API keys, CDNs, remote scripts, lorem ipsum, TODOs, or placeholder copy'
+    printf '%s\n' '- no secrets, API keys, CDNs, remote scripts, lorem ipsum, TODOs, or placeholder copy'
+    printf '%s\n\n' '- do not enable SVG uploads with `upload_mimes`; committed local SVG assets are allowed'
     printf 'Preview requirements:\n'
     printf '%s\n' "- static HTML preview at \`docs/themes/$slug/index.html\`"
     printf '%s\n' '- local preview CSS and JS'
-    printf '%s\n\n' '- usable without WordPress or PHP'
+    printf '%s\n' '- usable without WordPress or PHP'
+    printf '%s\n\n' '- closely mirror the WordPress theme layout, visual system, copy, navigation, and section order'
     printf 'Selected Codex model: %s\n' "${SELECTED_CODEX_MODEL:-unknown}"
     printf 'Selected reasoning: %s\n\n' "${SELECTED_CODEX_REASONING:-unknown}"
     printf 'Use the user prompt below verbatim as the source brief.\n\n'
@@ -128,6 +153,26 @@ run_npm_build() {
     npm install
     npm run build
   )
+}
+
+maybe_create_theme_pr() {
+  local slug="$1"
+
+  case "${CREATE_THEME_PR:-}" in
+    1|true|TRUE|yes|YES)
+      bash scripts/create-theme-pr.sh "$slug"
+      return
+      ;;
+    0|false|FALSE|no|NO)
+      return
+      ;;
+  esac
+
+  if is_interactive; then
+    if ask_yes_no "Validate, push a branch, and open a PR for $slug?" "y"; then
+      bash scripts/create-theme-pr.sh "$slug"
+    fi
+  fi
 }
 
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -155,6 +200,7 @@ bash -lc "$codex_command --output-last-message \"$last_message\" \"Read and foll
 run_npm_build "$slug"
 bash scripts/package-theme.sh "$slug"
 bash scripts/validate-theme.sh "$slug"
+maybe_create_theme_pr "$slug"
 
 printf '\nComplete:\n'
 printf 'Theme: wp-content/themes/%s/\n' "$slug"

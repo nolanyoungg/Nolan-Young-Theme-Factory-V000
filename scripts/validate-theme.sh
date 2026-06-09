@@ -39,6 +39,12 @@ if [ -d "$theme_dir" ]; then
     fail "Theme contains blocked placeholder, secret, or unsafe code pattern"
   fi
   rm -f /tmp/theme-validate.$$
+
+  if find "$theme_dir" -type f -name '*.php' -print0 | xargs -0 grep -n -E "upload_mimes|image/svg\\+xml|['\"]svg['\"][[:space:]]*=>" >/tmp/theme-svg-validate.$$ 2>/dev/null; then
+    cat /tmp/theme-svg-validate.$$ >&2
+    fail "Theme must not enable unsanitized SVG uploads; use committed local SVG assets instead"
+  fi
+  rm -f /tmp/theme-svg-validate.$$
 fi
 
 if command -v php >/dev/null 2>&1 && [ -d "$theme_dir" ]; then

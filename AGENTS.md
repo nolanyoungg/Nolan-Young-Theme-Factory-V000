@@ -27,10 +27,17 @@ Generated themes must be complete enough to install in WordPress:
 - local compiled CSS and JS
 - no secrets, API keys, CDNs, or remote runtime dependencies
 - no lorem ipsum, TODO markers, or placeholder copy
+- do not enable SVG media uploads with `upload_mimes`; committed local SVG assets are allowed
 
 ## Preview Rules
 
 Each theme needs a static preview at `docs/themes/<slug>/index.html`, with local CSS and JS. Link it from `docs/index.html`.
+
+The static preview should closely mirror the WordPress theme: same visual system, section order, navigation labels, core copy, and responsive layout intent. GitHub Pages is the review surface, so preview drift is a release blocker.
+
+## Pull Request Flow
+
+After validation, `scripts/create-theme-pr.sh <slug>` can create a branch, commit generated theme output, push it, and open a GitHub PR. It stages only the theme directory, preview directory, ZIP, and `docs/index.html`.
 
 ## Definition of Done
 

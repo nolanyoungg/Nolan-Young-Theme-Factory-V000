@@ -6,8 +6,9 @@ Put a prompt in `prompts/pending/`, run one script, and receive:
 - an installable classic WordPress theme in `wp-content/themes/`
 - a static preview in `docs/themes/`
 - a WordPress upload ZIP in `dist/zipped-themes/`
+- an optional GitHub pull request for review
 
-The first generated theme is already present:
+Generated themes are already present:
 - Theme: `wp-content/themes/nolan-showcase-theme-01/`
 - Preview: `docs/themes/nolan-showcase-theme-01/index.html`
 - ZIP: `dist/zipped-themes/nolan-showcase-theme-01.zip`
@@ -19,6 +20,7 @@ The first generated theme is already present:
 - Node/npm, for generated theme builds
 - `zip` and `unzip`
 - Codex CLI
+- GitHub CLI (`gh`) for automatic PR creation
 - PHP is optional; validation uses `php -l` when available
 
 ## Run
@@ -31,10 +33,12 @@ The script asks for:
 - a prompt file from `prompts/pending/`
 - a Codex model: `gpt-5.5`, `gpt-5.4`, or `gpt-5.4-mini`
 - a reasoning level: `low`, `medium`, `high`, or `xhigh`
+- whether to validate, push a branch, and open a PR after the theme passes validation
 
 Defaults:
 - model: `gpt-5.4-mini`
 - reasoning: `low`
+- PR creation: yes in interactive runs, or set `CREATE_THEME_PR=1`
 
 Noninteractive example:
 
@@ -42,6 +46,7 @@ Noninteractive example:
 THEME_PROMPT_FILE=prompts/pending/01-premium-photography-studio.txt \
 CODEX_MODEL=gpt-5.4-mini \
 CODEX_REASONING=low \
+CREATE_THEME_PR=1 \
 bash scripts/run-theme-workflow.sh
 ```
 
@@ -63,6 +68,8 @@ Or:
 bash scripts/validate-all.sh
 ```
 
+Validation blocks unsafe patterns including secrets, placeholder content, remote preview dependencies, and unsanitized SVG media upload support. Committed local SVG assets are allowed.
+
 ## Package
 
 ```bash
@@ -71,16 +78,25 @@ bash scripts/package-theme.sh nolan-showcase-theme-01
 
 The ZIP is written to `dist/zipped-themes/<theme-slug>.zip`.
 
-## Push
+## Preview
 
-After validation passes:
+GitHub Pages deploys the `docs/` folder from `main`. Each generated preview must be linked from `docs/index.html` and should closely match the WordPress theme layout, copy, navigation, and visual system.
+
+## Pull Requests
+
+After a theme passes validation, create a branch and PR manually:
 
 ```bash
-git status
-git add .
-git commit -m "Add nolan-showcase-theme-01"
-git push origin main
+bash scripts/create-theme-pr.sh nolan-showcase-theme-01
 ```
+
+The script stages only:
+- `wp-content/themes/<theme-slug>/`
+- `docs/themes/<theme-slug>/`
+- `dist/zipped-themes/<theme-slug>.zip`
+- `docs/index.html`
+
+Set `CREATE_THEME_PR=1` when running `scripts/run-theme-workflow.sh` to do this automatically after validation.
 
 ## Repository Layout
 
