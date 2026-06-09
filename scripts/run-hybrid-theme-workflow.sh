@@ -35,6 +35,34 @@ confirm() {
   [[ "$answer" =~ ^[Yy]$|^[Yy][Ee][Ss]$ ]]
 }
 
+choose_from_menu() {
+  local title="$1"
+  local default_index="$2"
+  shift 2
+  local options=("$@")
+  local choice
+  local i
+
+  printf '\n%s\n' "$title" >&2
+  for i in "${!options[@]}"; do
+    if [ "$((i + 1))" -eq "$default_index" ]; then
+      printf '  %s. %s (default)\n' "$((i + 1))" "${options[$i]}" >&2
+    else
+      printf '  %s. %s\n' "$((i + 1))" "${options[$i]}" >&2
+    fi
+  done
+
+  while true; do
+    read -r -p "Choose 1-${#options[@]} [$default_index]: " choice
+    choice="${choice:-$default_index}"
+    if [[ "$choice" =~ ^[0-9]+$ ]] && [ "$choice" -ge 1 ] && [ "$choice" -le "${#options[@]}" ]; then
+      printf '%s\n' "${options[$((choice - 1))]}"
+      return
+    fi
+    printf 'Please choose a valid number.\n' >&2
+  done
+}
+
 validate_required_repo() {
   local required_dirs=(agents instructions prompts/pending prompts/completed contracts codex wp-content/themes docs/themes dist/zipped-themes reports/runs scripts)
   local required_scripts=(scripts/run-ollama-stage.sh scripts/run-codex-final-pass.sh scripts/get-next-theme-version.sh scripts/package-theme.sh scripts/validate-all.sh)
@@ -194,14 +222,14 @@ configure_codex() {
     SELECTED_CODEX_REASONING="${CODEX_REASONING:-}"
   else
     local codex_executable="${CODEX_EXECUTABLE:-codex}"
-    local codex_model="${CODEX_MODEL:-gpt-5.5}"
-    local codex_reasoning="${CODEX_REASONING:-high}"
+    local codex_model="${CODEX_MODEL:-gpt-5.4-mini}"
+    local codex_reasoning="${CODEX_REASONING:-low}"
     local codex_extra_args="${CODEX_EXTRA_ARGS:-}"
 
     if is_interactive; then
       codex_executable="$(ask_default "Enter Codex executable" "${CODEX_EXECUTABLE:-codex}")"
-      codex_model="$(ask_default "Enter Codex model" "${CODEX_MODEL:-gpt-5.5}")"
-      codex_reasoning="$(ask_default "Enter Codex reasoning level" "${CODEX_REASONING:-high}")"
+      codex_model="$(choose_from_menu "Choose Codex model:" 3 "gpt-5.5" "gpt-5.4" "gpt-5.4-mini")"
+      codex_reasoning="$(choose_from_menu "Choose Codex reasoning level:" 1 "low" "medium" "high" "xhigh")"
       codex_extra_args="$(ask_default "Enter additional Codex arguments (optional)" "${CODEX_EXTRA_ARGS:-}")"
     elif [ -n "${CODEX_COMMAND:-}" ] && [ -z "${CODEX_EXECUTABLE:-}" ] && [ -z "${CODEX_MODEL:-}" ] && [ -z "${CODEX_REASONING:-}" ] && [ -z "${CODEX_EXTRA_ARGS:-}" ]; then
       command_value="$CODEX_COMMAND"
@@ -227,7 +255,17 @@ configure_codex() {
     [ -n "$command_name" ] || fail "Codex executable cannot be empty"
     command -v "$command_name" >/dev/null 2>&1 || fail "Codex command not found: $command_name"
 
-    command_value="$codex_executable exec --model \"$codex_model\" --sandbox workspace-write"
+    case "$codex_model" in
+      gpt-5.5|gpt-5.4|gpt-5.4-mini) ;;
+      *) fail "Unsupported Codex model: $codex_model. Use gpt-5.5, gpt-5.4, or gpt-5.4-mini." ;;
+    esac
+
+    case "$codex_reasoning" in
+      low|medium|high|xhigh) ;;
+      *) fail "Unsupported Codex reasoning level: $codex_reasoning. Use low, medium, high, or xhigh." ;;
+    esac
+
+    command_value="$codex_executable exec --model \"$codex_model\" -c 'reasoning_effort=\"$codex_reasoning\"' --sandbox workspace-write"
     if [ -n "$codex_extra_args" ]; then
       command_value="$command_value $codex_extra_args"
     fi

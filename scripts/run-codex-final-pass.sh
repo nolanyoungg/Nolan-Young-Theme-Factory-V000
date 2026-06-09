@@ -98,9 +98,13 @@ fi
 run_codex_with_prompt() {
   local command_string="$1"
   local prompt_path="$2"
+  local last_message_path="$3"
+  local launch_prompt
 
-  bash -lc "$command_string -" < "$prompt_path"
+  launch_prompt="Read and follow the complete generation instructions in $prompt_path. Preserve the user prompt verbatim from that file, make the required repository edits, and finish with a concise summary."
+
+  bash -lc "$command_string --output-last-message \"$last_message_path\" \"\$1\"" _ "$launch_prompt"
 }
 
 printf 'Running Codex %s pass with command: %s\n' "$mode" "$codex_command"
-run_codex_with_prompt "$codex_command" "$assembled"
+run_codex_with_prompt "$codex_command" "$assembled" "$run_dir/codex-$mode-last-message.md"

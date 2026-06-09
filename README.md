@@ -44,15 +44,16 @@ ollama pull <model>
 For Codex modes, confirm the command at runtime or set `CODEX_COMMAND`, for example:
 
 ```bash
-CODEX_COMMAND="codex exec --model gpt-5.5 --sandbox workspace-write" bash scripts/run-hybrid-theme-workflow.sh
+CODEX_EXECUTABLE=codex CODEX_MODEL=gpt-5.4-mini CODEX_REASONING=low bash scripts/run-hybrid-theme-workflow.sh
 ```
 
 Interactive Codex runs now prompt for:
 - the Codex command or executable
-- the Codex model
-- the reasoning level
+- the Codex model: `gpt-5.5`, `gpt-5.4`, or `gpt-5.4-mini`
+- the reasoning level: `low`, `medium`, `high`, or `xhigh`
 - optional extra Codex arguments
-  - The current Codex CLI exposes model selection directly; reasoning is captured in the assembled prompt and run metadata because there is no dedicated reasoning flag in this version of the CLI.
+
+The default guided Codex selection is `gpt-5.4-mini` with `low` reasoning. The workflow passes reasoning through Codex config with `-c reasoning_effort="..."`.
 
 Noninteractive overrides also support `CODEX_EXECUTABLE`, `CODEX_MODEL`, `CODEX_REASONING`, and `CODEX_EXTRA_ARGS` when you want the script to build the Codex command for you.
 
@@ -62,8 +63,8 @@ Noninteractive overrides also support `CODEX_EXECUTABLE`, `CODEX_MODEL`, `CODEX_
 THEME_FACTORY_MODE=codex \
 THEME_PROMPT_FILE=prompts/pending/my-theme.txt \
 CODEX_EXECUTABLE=codex \
-CODEX_MODEL=gpt-5.5 \
-CODEX_REASONING=high \
+CODEX_MODEL=gpt-5.4-mini \
+CODEX_REASONING=low \
 bash scripts/run-hybrid-theme-workflow.sh
 ```
 
