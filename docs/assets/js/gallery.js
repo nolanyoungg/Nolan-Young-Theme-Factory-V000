@@ -1,0 +1,11 @@
+(function () {
+  const grid = document.querySelector('[data-theme-grid]');
+  if (!grid) return;
+
+  const cards = grid.querySelectorAll('.theme-card');
+  const emptyState = grid.querySelector('[data-empty-state]');
+
+  if (cards.length > 0 && emptyState) {
+    emptyState.hidden = true;
+  }
+})();

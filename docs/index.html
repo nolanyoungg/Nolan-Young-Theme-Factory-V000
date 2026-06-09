@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Nolan Young Theme Factory Preview Gallery</title>
+    <link rel="stylesheet" href="assets/css/gallery.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <p class="eyebrow">WordPress Theme Previews</p>
+      <h1>Nolan Young Theme Factory</h1>
+      <p class="lede">A gallery of generated classic WordPress themes with static previews ready for review on GitHub Pages.</p>
+    </header>
+
+    <main>
+      <section class="gallery-intro" aria-labelledby="gallery-title">
+        <h2 id="gallery-title">Generated Themes</h2>
+        <p>New theme cards are added here by the generation workflow. Each card links to a standalone static preview.</p>
+      </section>
+
+      <section class="theme-grid" data-theme-grid aria-label="Theme preview cards">
+        <article class="empty-state" data-empty-state>
+          <h3>No generated themes yet</h3>
+          <p>Add a prompt to <code>prompts/pending/</code>, run the workflow, and the first preview card will appear here.</p>
+        </article>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>Generated previews use local assets and are designed to mirror installable WordPress theme output.</p>
+    </footer>
+    <script src="assets/js/gallery.js"></script>
+  </body>
+</html>

@@ -1,0 +1,58 @@
+name: Check ZIP Freshness
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install unzip
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y unzip
+
+      - name: Detect changed theme slugs
+        id: changed
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            base_ref="${{ github.base_ref }}"
+            git fetch origin "$base_ref" --depth=1
+            changed_files="$(git diff --name-only "origin/$base_ref"...HEAD)"
+          else
+            before="${{ github.event.before }}"
+            if [ -n "$before" ] && git cat-file -e "$before^{commit}" 2>/dev/null; then
+              changed_files="$(git diff --name-only "$before" HEAD)"
+            else
+              changed_files="$(git diff --name-only HEAD~1 HEAD 2>/dev/null || true)"
+            fi
+          fi
+
+          slugs="$(printf '%s\n' "$changed_files" | sed -n 's#^wp-content/themes/\(nolan-showcase-theme-[0-9][0-9]\)/.*#\1#p' | sort -u | tr '\n' ' ')"
+          echo "slugs=$slugs" >> "$GITHUB_OUTPUT"
+
+      - name: Check ZIP freshness for changed themes
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          slugs="${{ steps.changed.outputs.slugs }}"
+          if [ -z "$slugs" ]; then
+            echo "No changed generated themes detected."
+            exit 0
+          fi
+          for slug in $slugs; do
+            bash scripts/validate-zip-freshness.sh "$slug"
+          done
