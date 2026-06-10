@@ -23,7 +23,10 @@ fail() {
 
 if [ -f "$zip_path" ]; then
   theme_factory_require_cmd unzip
-  mapfile -t zip_entries < <(unzip -Z1 "$zip_path")
+  zip_entries=()
+  while IFS= read -r zip_entry; do
+    zip_entries+=("$zip_entry")
+  done < <(unzip -Z1 "$zip_path")
   printf '%s\n' "${zip_entries[@]}" | grep -qx "$slug/style.css" || fail "ZIP does not contain $slug/style.css"
   if printf '%s\n' "${zip_entries[@]}" | grep -E '(^|/)node_modules/|(^|/)\.git/' >/dev/null; then
     fail "ZIP contains node_modules or .git"
