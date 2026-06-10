@@ -4,7 +4,7 @@ Generated themes must follow the required structure from `AGENTS.md` and `contra
 
 Important conventions:
 
-- Compile source assets into `assets/css/bundle.css` and `assets/js/bundle.js`.
+- Store local theme assets in `assets/css/theme.css` and `assets/js/theme.js`.
 - Enqueue compiled assets from WordPress.
 - Keep PHP escaped and sanitized.
 - Include docs, accessibility notes, README, and changelog.

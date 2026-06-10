@@ -1,6 +1,6 @@
 # Static Preview Template
 
-Generated previews live under `docs/themes/NNN_nolan_young_theme_description/`.
+Generated previews live under `docs/themes/NNN_nolan_young_theme_<theme-concept-slug>/`.
 
 Required files:
 

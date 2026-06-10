@@ -1,6 +1,6 @@
 # Nolan-Menu WordPress Blueprint
 
-Implement the header in `header.php` and the behavior in `src/js/main.js`, compiled to `assets/js/bundle.js`.
+Implement the header in `header.php` and the behavior in `assets/js/theme.js`.
 
 Required structure:
 

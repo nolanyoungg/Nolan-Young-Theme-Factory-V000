@@ -145,7 +145,7 @@ theme_factory_check_prompt_file() {
 }
 
 theme_factory_slug_pattern() {
-  printf '^([0-9]{3}_nolan_young_theme_[a-z0-9][a-z0-9_]*[a-z0-9]|nolan-showcase-theme-[0-9]{2})$'
+  printf '^[0-9]{3}_nolan_young_theme_[a-z0-9][a-z0-9_]*[a-z0-9]$'
 }
 
 theme_factory_validate_slug() {
@@ -169,7 +169,7 @@ theme_factory_get_next_slug() {
   local root_dir
   root_dir="$(theme_factory_repo_root)"
 
-  local max=0
+  local max=-1
   local scan_paths=(
     "$root_dir/wp-content/themes"
     "$root_dir/docs/themes"
@@ -182,12 +182,6 @@ theme_factory_get_next_slug() {
     [ -d "$scan_path" ] || continue
     while IFS= read -r name; do
       if [[ "$name" =~ ^([0-9][0-9][0-9])_nolan_young_theme_[a-z0-9][a-z0-9_]*[a-z0-9](\.zip)?$ ]]; then
-        number="${BASH_REMATCH[1]}"
-        number="$((10#$number))"
-        if [ "$number" -gt "$max" ]; then
-          max="$number"
-        fi
-      elif [[ "$name" =~ ^nolan-showcase-theme-([0-9][0-9])(\.zip)?$ ]]; then
         number="${BASH_REMATCH[1]}"
         number="$((10#$number))"
         if [ "$number" -gt "$max" ]; then
