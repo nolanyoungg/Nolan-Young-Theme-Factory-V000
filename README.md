@@ -24,7 +24,7 @@ The next slug is determined across:
 - `dist/zipped-themes/`
 - `reports/runs/`
 
-Legacy `nolan-showcase-theme-*` outputs may still exist in the repo from earlier runs, but new generated themes should use the numeric `NNN_nolan_young_theme_description` convention.
+Generated themes use only the numeric `NNN_nolan_young_theme_<theme-concept-slug>` convention. In a clean repo, the first generated theme is `000`.
 
 ## Workflow Scripts
 
@@ -49,7 +49,7 @@ Legacy compatibility still works:
 
 ```bash
 THEME_FACTORY_MODE=ollama-only \
-THEME_PROMPT_FILE=prompts/pending/web-dev-company-local-ollama-theme.txt \
+THEME_PROMPT_FILE=prompts/pending/my-theme-brief.txt \
 OLLAMA_MODEL=qwen2.5-coder:14b \
 bash scripts/run-hybrid-theme-workflow.sh
 ```
@@ -348,5 +348,3 @@ For all modes, the final output is expected to include the WordPress theme, stat
 ```bash
 bash scripts/validate-all.sh <theme-slug>
 ```
-
-

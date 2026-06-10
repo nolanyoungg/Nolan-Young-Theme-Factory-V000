@@ -1,0 +1,2 @@
+<?php
+?><section class="section"><div class="container work-grid"><img src="<?php echo nyp_asset_uri( 'images/hardscape-patio-detail.png' ); ?>" alt="Completed hardscape patio with planting"><div><p class="eyebrow">Featured Work</p><h2>Outdoor rooms that feel established from day one.</h2><p>Our team coordinates stonework, planting, turf repair, drainage details, and maintenance handoff so the final property reads as one finished environment.</p><a class="btn secondary" href="<?php echo esc_url( home_url( '/work/' ) ); ?>">View Finished Properties</a></div></div></section>

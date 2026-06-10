@@ -40,21 +40,21 @@ else
     fail "Theme contains placeholder or filler copy"
   fi
 
-  if [ -f "$theme_dir/assets/css/bundle.css" ]; then
-    [ "$(wc -c < "$theme_dir/assets/css/bundle.css" | tr -d ' ')" -ge 1000 ] || fail "Compiled CSS is too small to be meaningful"
+  if [ -f "$theme_dir/assets/css/theme.css" ]; then
+    [ "$(wc -c < "$theme_dir/assets/css/theme.css" | tr -d ' ')" -ge 1000 ] || fail "Theme CSS is too small to be meaningful"
   else
-    fail "Missing compiled CSS"
+    fail "Missing theme CSS"
   fi
 
-  if [ -f "$theme_dir/assets/js/bundle.js" ]; then
-    [ "$(wc -c < "$theme_dir/assets/js/bundle.js" | tr -d ' ')" -ge 400 ] || fail "Compiled JS is too small to be meaningful"
+  if [ -f "$theme_dir/assets/js/theme.js" ]; then
+    [ "$(wc -c < "$theme_dir/assets/js/theme.js" | tr -d ' ')" -ge 400 ] || fail "Theme JS is too small to be meaningful"
   else
-    fail "Missing compiled JS"
+    fail "Missing theme JS"
   fi
 
-  grep -R -I -n -E 'wp_enqueue_style|wp_enqueue_script' "$theme_dir/inc" "$theme_dir/functions.php" >/dev/null 2>&1 || fail "Missing asset enqueue calls"
-  grep -R -I -n -E 'wp_enqueue_style' "$theme_dir/inc" "$theme_dir/functions.php" >/dev/null 2>&1 || fail "Missing wp_enqueue_style call"
-  grep -R -I -n -E 'wp_enqueue_script' "$theme_dir/inc" "$theme_dir/functions.php" >/dev/null 2>&1 || fail "Missing wp_enqueue_script call"
+  grep -R -I -n -E 'wp_enqueue_style|wp_enqueue_script' "$theme_dir" >/dev/null 2>&1 || fail "Missing asset enqueue calls"
+  grep -R -I -n -E 'wp_enqueue_style' "$theme_dir" >/dev/null 2>&1 || fail "Missing wp_enqueue_style call"
+  grep -R -I -n -E 'wp_enqueue_script' "$theme_dir" >/dev/null 2>&1 || fail "Missing wp_enqueue_script call"
   grep -R -I -n -E 'front-page|content-home-hero|content-home-services|content-home-work|content-home-process|content-home-testimonials|content-home-cta' "$theme_dir/front-page.php" "$theme_dir/template-parts" >/dev/null 2>&1 || fail "Homepage template parts are missing or not referenced"
   grep -R -I -n -E '\.(jpg|jpeg|png|webp)' "$theme_dir" >/dev/null 2>&1 || fail "Theme does not reference local raster images"
   [ -f "$theme_dir/README.md" ] || fail "Missing theme README"
@@ -73,6 +73,22 @@ if [ -f "$root_dir/docs/index.html" ]; then
   grep -Eq "themes/$slug/(index|homepage_preview)\\.html" "$root_dir/docs/index.html" || fail "docs/index.html does not link to $slug preview"
 else
   fail "Missing docs/index.html"
+fi
+
+old_showcase_pattern='nolan'"-showcase-theme-[0-9]+"
+if grep -R -I -n -E "$old_showcase_pattern" "$root_dir" \
+  --exclude-dir=.git \
+  --exclude='*.png' \
+  --exclude='*.jpg' \
+  --exclude='*.jpeg' \
+  --exclude='*.webp' >/dev/null 2>&1; then
+  grep -R -I -n -E "$old_showcase_pattern" "$root_dir" \
+    --exclude-dir=.git \
+    --exclude='*.png' \
+    --exclude='*.jpg' \
+    --exclude='*.jpeg' \
+    --exclude='*.webp' >&2
+  fail "Old showcase theme references remain"
 fi
 
 if [ "$failures" -gt 0 ]; then

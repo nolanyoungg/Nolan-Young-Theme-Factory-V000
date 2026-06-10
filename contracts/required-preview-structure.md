@@ -1,6 +1,6 @@
 # Required Preview Structure
 
-Each theme preview must live at `docs/themes/NNN_nolan_young_theme_description/` and include:
+Each theme preview must live at `docs/themes/NNN_nolan_young_theme_<theme-concept-slug>/` and include:
 
 - `index.html`
 - `homepage_preview.html`
@@ -27,5 +27,4 @@ Every preview page must:
 - avoid placeholder, filler, remote, CDN, or hotlinked content
 
 The preview must be local-only, representative, and linked from `docs/index.html`.
-
 
