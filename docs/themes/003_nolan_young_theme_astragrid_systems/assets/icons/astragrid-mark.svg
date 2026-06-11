@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-labelledby="title desc">
+  <title id="title">AstraGrid Systems mark</title>
+  <desc id="desc">An orbital grid mark with a central node and connected rings.</desc>
+  <defs>
+    <linearGradient id="g1" x1="0" x2="1">
+      <stop offset="0" stop-color="#55d6ff"/>
+      <stop offset="1" stop-color="#b8ff5f"/>
+    </linearGradient>
+    <radialGradient id="g2" cx="50%" cy="40%" r="65%">
+      <stop offset="0" stop-color="#1d3c63"/>
+      <stop offset="1" stop-color="#08111d"/>
+    </radialGradient>
+  </defs>
+  <rect width="120" height="120" rx="28" fill="url(#g2)"/>
+  <circle cx="60" cy="60" r="32" fill="none" stroke="url(#g1)" stroke-width="3.5"/>
+  <circle cx="60" cy="60" r="12" fill="url(#g1)"/>
+  <path d="M22 60h76M60 22v76M33 33l54 54M87 33 33 87" stroke="#4ccfff" stroke-opacity=".36" stroke-width="2"/>
+  <circle cx="60" cy="60" r="45" fill="none" stroke="#2f4a69" stroke-width="2" stroke-dasharray="6 8"/>
+</svg>

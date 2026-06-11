@@ -88,6 +88,8 @@ if [ -f "$root_dir/docs/index.html" ]; then
   while IFS= read -r gallery_preview_dir; do
     gallery_slug="$(basename "$gallery_preview_dir")"
     grep -Eq "themes/$gallery_slug/(index|homepage_preview)\\.html" "$root_dir/docs/index.html" || fail "docs/index.html does not link to generated preview: $gallery_slug"
+    grep -Eq "<iframe[^>]+src=\"themes/$gallery_slug/homepage_preview\\.html\"" "$root_dir/docs/index.html" || fail "docs/index.html does not show a visible iframe card for generated preview: $gallery_slug"
+    grep -Eq "<a class=\"button\" href=\"themes/$gallery_slug/index\\.html\"" "$root_dir/docs/index.html" || fail "docs/index.html does not show a visible card button for generated preview: $gallery_slug"
   done < <(
     find "$root_dir/docs/themes" -mindepth 1 -maxdepth 1 -type d \
       -name '[0-9][0-9][0-9]_nolan_young_theme_*' | sort

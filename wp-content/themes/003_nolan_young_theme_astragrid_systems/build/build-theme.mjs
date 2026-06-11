@@ -1,0 +1,10 @@
+import { copyFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname, resolve } from 'node:path';
+const here = dirname(fileURLToPath(import.meta.url));
+const root = resolve(here, '..');
+copyFileSync(resolve(root, 'src/scss/main.scss'), resolve(root, 'assets/css/theme.css'));
+copyFileSync(resolve(root, 'src/scss/main.scss'), resolve(root, 'assets/css/bundle.css'));
+copyFileSync(resolve(root, 'src/js/main.js'), resolve(root, 'assets/js/theme.js'));
+copyFileSync(resolve(root, 'src/js/main.js'), resolve(root, 'assets/js/bundle.js'));
+console.log('AstraGrid assets copied.');

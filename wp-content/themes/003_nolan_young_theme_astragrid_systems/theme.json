@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "settings": {
+    "color": {
+      "custom": false
+    },
+    "spacing": {
+      "units": [
+        "px",
+        "rem",
+        "vw"
+      ]
+    }
+  },
+  "styles": {
+    "color": {
+      "background": "#040812",
+      "text": "#eff8ff"
+    }
+  }
+}

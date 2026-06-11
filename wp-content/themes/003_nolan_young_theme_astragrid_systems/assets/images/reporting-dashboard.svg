@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 780" role="img" aria-labelledby="title desc">
+  <title id="title">Reporting dashboard</title>
+  <desc id="desc">Dashboard with summary blocks and a line chart.</desc>
+  <rect width="1200" height="780" rx="36" fill="#09111d"/>
+  <rect x="44" y="44" width="1112" height="692" rx="28" fill="#0e1a2c" stroke="#24435f" stroke-width="2"/>
+  <rect x="92" y="92" width="1016" height="88" rx="18" fill="#11233a"/>
+  <rect x="92" y="214" width="290" height="180" rx="20" fill="#11233a"/><rect x="410" y="214" width="290" height="180" rx="20" fill="#11233a"/><rect x="728" y="214" width="380" height="180" rx="20" fill="#11233a"/>
+  <rect x="92" y="422" width="1016" height="250" rx="20" fill="#11233a"/>
+  <path d="M138 288h138M138 324h202M138 360h110" stroke="#1f3955" stroke-width="18" stroke-linecap="round"/>
+  <path d="M456 288h176M456 324h124M456 360h204" stroke="#1f3955" stroke-width="18" stroke-linecap="round"/>
+  <path d="M780 288h252M780 324h184M780 360h140" stroke="#1f3955" stroke-width="18" stroke-linecap="round"/>
+  <path d="M138 604c66-34 124-76 186-82 62-6 108 22 168 58 68 42 126 62 182 50 64-14 112-58 176-98 74-46 144-58 246-28" fill="none" stroke="#55d6ff" stroke-width="10" stroke-linecap="round"/>
+  <path d="M138 604c66-34 124-76 186-82 62-6 108 22 168 58 68 42 126 62 182 50 64-14 112-58 176-98 74-46 144-58 246-28" fill="none" stroke="#b8ff5f" stroke-width="4" stroke-linecap="round"/>
+</svg>

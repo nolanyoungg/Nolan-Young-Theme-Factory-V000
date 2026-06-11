@@ -33,7 +33,6 @@ preview_dir="$root_dir/docs/themes/$slug"
 zip_path="$root_dir/dist/zipped-themes/$slug.zip"
 
 mkdir -p "$run_dir"
-theme_factory_write_run_metadata "$run_dir" "$mode" "$slug" "$prompt_file" "${CODEX_COMMAND:-}" "${OLLAMA_MODEL:-}"
 case "$prompt_file" in
   *.md) selected_prompt_copy="$run_dir/selected-prompt.md" ;;
   *) selected_prompt_copy="$run_dir/selected-prompt.txt" ;;
@@ -63,13 +62,13 @@ if [ "$mode" != "codex-only" ]; then
 fi
 
 if [ "$mode" != "ollama-only" ]; then
-  codex_command="${CODEX_COMMAND:-}"
+  codex_command="${CODEX_COMMAND:-$(theme_factory_codex_command_for_context generation)}"
   if [ -z "$codex_command" ]; then
     if theme_factory_is_interactive; then
-      read -r -p "Enter Codex command [codex exec]: " codex_command
-      codex_command="${codex_command:-codex exec}"
+      read -r -p "Enter Codex command [repo default]: " codex_command
+      codex_command="${codex_command:-$(theme_factory_codex_command_for_context generation)}"
     else
-      codex_command="codex exec"
+      codex_command="$(theme_factory_codex_command_for_context generation)"
     fi
   fi
   original_codex_command="$codex_command"
@@ -82,6 +81,8 @@ if [ "$mode" != "ollama-only" ]; then
   fi
   theme_factory_require_cmd "${codex_command%% *}"
 fi
+
+theme_factory_write_run_metadata "$run_dir" "$mode" "$slug" "$prompt_file" "$codex_command" "${OLLAMA_MODEL:-}"
 
 if [ "$mode" = "ollama-only" ] && [ -z "$ollama_model" ]; then
   ollama_model="$(theme_factory_select_ollama_model)"
