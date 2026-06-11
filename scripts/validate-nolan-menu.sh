@@ -22,7 +22,16 @@ require_pattern() {
   local label="$1"
   local pattern="$2"
   shift 2
-  grep -R -I -n -E "$pattern" "$@" >/dev/null 2>&1 || fail "$label"
+  local paths=()
+  local path
+  for path in "$@"; do
+    [ -e "$path" ] && paths+=("$path")
+  done
+  if [ "${#paths[@]}" -eq 0 ]; then
+    fail "$label"
+    return
+  fi
+  grep -R -I -n -E "$pattern" "${paths[@]}" >/dev/null 2>&1 || fail "$label"
 }
 
 for path in "$theme_dir" "$preview_dir"; do

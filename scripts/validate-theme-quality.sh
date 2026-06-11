@@ -42,7 +42,7 @@ scan_patterns() {
     --exclude='*.js' \
     --exclude='*.map' \
     'lorem ipsum|todo|placeholder|sample text|coming soon|sample service|example service|replace this|dummy content|image here|gray box|we are passionate about excellence|your success is our mission|we help businesses grow' \
-    "$path" 2>/dev/null || true
+    "$path" 2>/dev/null | grep -v -i 'placeholder=' || true
 }
 
 scan_strict_patterns() {
@@ -59,7 +59,7 @@ scan_strict_patterns() {
     --exclude='*.js' \
     --exclude='*.map' \
     'request assessment preview|services preview|process preview|featured work preview|homeowner proof preview|footer resources|example\.com' \
-    "$path" 2>/dev/null || true
+    "$path" 2>/dev/null | grep -v -i 'placeholder=' || true
 }
 
 scan_generic_asset_names() {

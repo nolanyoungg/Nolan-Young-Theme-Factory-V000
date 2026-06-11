@@ -145,7 +145,9 @@ append_codex_efficiency_context() {
     printf '%s\n' '- Treat the repository contracts and this generated prompt as the working checklist. Read source files only when an exact contract detail is needed.'
     printf '%s\n' '- Preserve existing generated outputs as shared release state; only edit the requested new slug, run reports, and ZIP output for this run.'
     printf '%s\n' '- If you need a helper generator script for large file output, keep it under reports/runs/'"$slug"'/ and use it immediately to write the generated files.'
-    printf '%s\n' '- After writing files, run the existing scripts and fix only concrete validation failures.'
+    printf '%s\n' '- After writing files, do not run validate-all.sh or validate-preview.sh inside Codex. The workflow script updates docs/index.html after Codex exits, then runs full validation.'
+    printf '%s\n' '- Inside Codex, only run slug-local checks that do not depend on docs/index.html gallery state, such as PHP lint, validate-theme-structure.sh, validate-theme-quality.sh, validate-nolan-menu.sh, and validate-security.sh.'
+    printf '%s\n' '- Keep command output concise. Do not print full generated diffs or full file contents after every patch.'
     printf '%s\n' '- The shared gallery already exists. You do not need to enumerate existing gallery cards because docs/index.html is owned by the workflow script.'
   } >> "$output"
 }
