@@ -27,6 +27,8 @@ Prompt templates are source material, not generated output. Preserve `prompts/th
 
 Normal generation runs must create the requested slug as a fresh generated output. Do not copy, rename, or migrate an existing numbered generated theme into the new slug unless the user explicitly asks for a clone or migration test.
 
+Codex-only runs must read the active validation scripts and contracts before writing the main generated files. The first generation pass should target current validation gates directly, not discover them after a large patch. Do not copy literal example filenames from docs or contracts. Generated visual asset names must be business-specific, not `prompt-specific-visual-*`, `icon1`, or other numbered placeholders. Do not use checklist filler such as "Services Preview", "Process Preview", "Service Detail", "All Services", or `example.com` to satisfy required files. One-line template parts or static preview pages are not acceptable premium output, even when they satisfy the required tree shape.
+
 Authoritative supporting contracts:
 
 ```text

@@ -59,3 +59,15 @@ project-result-card.svg
 ```
 
 Do not copy generic example filenames from repository documentation. Asset names must match the actual generated business and prompt.
+
+Do not use placeholder-style filenames such as:
+
+```text
+prompt-specific-visual-1.svg
+prompt-specific-visual-2.svg
+icon1.svg
+image1.svg
+visual-1.svg
+```
+
+If the model needs six assets, each asset still needs a specific name that describes what the asset represents.

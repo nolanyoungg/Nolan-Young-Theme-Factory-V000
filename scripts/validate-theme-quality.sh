@@ -18,6 +18,16 @@ fail() {
   failures=$((failures + 1))
 }
 
+strict_generation_quality=0
+case "$slug" in
+  [0-9][0-9][0-9]_*)
+    slug_number="${slug%%_*}"
+    if [ "$slug_number" -ge 5 ]; then
+      strict_generation_quality=1
+    fi
+    ;;
+esac
+
 scan_patterns() {
   local path="$1"
   grep -R -I -n -i -E \
@@ -35,6 +45,23 @@ scan_patterns() {
     "$path" 2>/dev/null || true
 }
 
+scan_strict_patterns() {
+  local path="$1"
+  grep -R -I -n -i -E \
+    --exclude='*.svg' \
+    --exclude='*.png' \
+    --exclude='*.jpg' \
+    --exclude='*.jpeg' \
+    --exclude='*.webp' \
+    --exclude='*.gif' \
+    --exclude='*.css' \
+    --exclude='*.scss' \
+    --exclude='*.js' \
+    --exclude='*.map' \
+    'request assessment preview|services preview|process preview|featured work preview|homeowner proof preview|footer resources|example\.com' \
+    "$path" 2>/dev/null || true
+}
+
 scan_generic_asset_names() {
   local path="$1"
   find "$path" -type f \( \
@@ -43,8 +70,19 @@ scan_generic_asset_names() {
     -name 'construction-framing-crew.*' -o \
     -name 'software-dashboard-interface.*' -o \
     -name 'wellness-treatment-room.*' -o \
-    -name 'real-estate-kitchen-detail.*' \
+    -name 'real-estate-kitchen-detail.*' -o \
+    -name 'prompt-specific-visual-*.*' -o \
+    -name 'icon1.*' \
   \) -print 2>/dev/null || true
+}
+
+scan_thin_files() {
+  local path="$1"
+  find "$path" -type f \( -name '*.php' -o -name '*.html' -o -name '*.css' \) \
+    ! -name 'style.css' \
+    ! -path '*/reports/runs/*' \
+    -size -420c \
+    -print 2>/dev/null || true
 }
 
 if [ ! -d "$theme_dir" ]; then
@@ -56,10 +94,26 @@ else
     fail "Theme contains placeholder or filler copy"
   fi
 
+  if [ "$strict_generation_quality" -eq 1 ]; then
+    theme_strict_matches="$(scan_strict_patterns "$theme_dir")"
+    if [ -n "$theme_strict_matches" ]; then
+      printf '%s\n' "$theme_strict_matches" >&2
+      fail "Theme contains checklist filler or non-production metadata"
+    fi
+  fi
+
   theme_generic_assets="$(scan_generic_asset_names "$theme_dir")"
   if [ -n "$theme_generic_assets" ]; then
     printf '%s\n' "$theme_generic_assets" >&2
-    fail "Theme contains copied generic documentation asset filenames"
+    fail "Theme contains copied generic or non-specific asset filenames"
+  fi
+
+  if [ "$strict_generation_quality" -eq 1 ]; then
+    thin_theme_files="$(scan_thin_files "$theme_dir/template-parts")"
+    if [ -n "$thin_theme_files" ]; then
+      printf '%s\n' "$thin_theme_files" >&2
+      fail "Theme template parts are too thin to be premium generated output"
+    fi
   fi
 
   if [ -f "$theme_dir/assets/css/theme.css" ]; then
@@ -93,13 +147,32 @@ if [ -d "$preview_dir" ]; then
     fail "Preview contains placeholder or filler copy"
   fi
 
+  if [ "$strict_generation_quality" -eq 1 ]; then
+    preview_strict_matches="$(scan_strict_patterns "$preview_dir")"
+    if [ -n "$preview_strict_matches" ]; then
+      printf '%s\n' "$preview_strict_matches" >&2
+      fail "Preview contains checklist filler or non-production metadata"
+    fi
+  fi
+
   preview_generic_assets="$(scan_generic_asset_names "$preview_dir")"
   if [ -n "$preview_generic_assets" ]; then
     printf '%s\n' "$preview_generic_assets" >&2
-    fail "Preview contains copied generic documentation asset filenames"
+    fail "Preview contains copied generic or non-specific asset filenames"
+  fi
+
+  if [ "$strict_generation_quality" -eq 1 ]; then
+    thin_preview_files="$(scan_thin_files "$preview_dir")"
+    if [ -n "$thin_preview_files" ]; then
+      printf '%s\n' "$thin_preview_files" >&2
+      fail "Preview pages or CSS are too thin to represent the generated theme"
+    fi
   fi
 
   if [ -f "$preview_dir/assets/css/preview.css" ]; then
+    if [ "$strict_generation_quality" -eq 1 ]; then
+      [ "$(wc -c < "$preview_dir/assets/css/preview.css" | tr -d ' ')" -ge 3000 ] || fail "Preview CSS is too small to be a polished static preview"
+    fi
     grep -q ':root' "$preview_dir/assets/css/preview.css" || fail "Preview CSS is missing root variables"
     grep -q 'body' "$preview_dir/assets/css/preview.css" || fail "Preview CSS is missing body styling"
     grep -q 'site-header' "$preview_dir/assets/css/preview.css" || fail "Preview CSS is missing header styling"

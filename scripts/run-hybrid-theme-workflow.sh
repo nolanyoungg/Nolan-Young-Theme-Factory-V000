@@ -126,7 +126,9 @@ append_codex_efficiency_context() {
   local output="$1"
   {
     printf '\n## Codex-Only Efficiency Guardrails\n\n'
-    printf '%s\n' '- Start by creating the requested new output tree. Do not spend the first pass doing broad repo archaeology.'
+    printf '%s\n' '- Before writing generated files, read the validation scripts and contracts listed below exactly once so the first output pass targets the current gates.'
+    printf '%s\n' '- Required first reads: scripts/validate-theme-structure.sh, scripts/validate-preview.sh, scripts/validate-theme-quality.sh, contracts/required-theme-structure.md, contracts/required-preview-structure.md, contracts/nolan-menu-header.md, and contracts/local-image-rules.md.'
+    printf '%s\n' '- Then create the requested new output tree. Do not spend the first pass doing broad repo archaeology.'
     printf '%s\n' '- Your first filesystem action must create wp-content/themes/'"$slug"'/, docs/themes/'"$slug"'/, reports/runs/'"$slug"'/generation-progress.md, and a short progress note. Do this before extended planning.'
     printf '%s\n' '- Prefer incremental file writes that leave inspectable progress over holding the entire generated site in a long hidden reasoning block.'
     printf '%s\n' '- Do not compose the whole site as one large hidden generator before writing validator-relevant files.'
@@ -135,16 +137,16 @@ append_codex_efficiency_context() {
     printf '%s\n' '- Do not edit docs/index.html. The workflow script owns the shared gallery update after generated files exist.'
     printf '%s\n' '- Do not read memory files under /Users/nolany/.codex/memories during this generation run.'
     printf '%s\n' '- Do not list or inspect full existing generated theme trees unless validation failure output specifically points to one.'
+    printf '%s\n' '- Do not copy literal example filenames from repository docs. Asset filenames must be business-specific, such as home-audit-scorecard.svg or insulation-plan-map.svg.'
+    printf '%s\n' '- Do not use filenames like prompt-specific-visual-1.svg, icon1.svg, or generic numbered placeholders.'
+    printf '%s\n' '- Do not write headings or template parts that include "Preview", "Service Detail", "Service Highlight", "All Services", or other checklist filler. Use finished business copy.'
+    printf '%s\n' '- Static preview pages and template parts must be substantial enough to inspect visually; one-line checklist files are a failure even if they satisfy structure.'
+    printf '%s\n' '- Do not use example.com in generated theme headers or links.'
     printf '%s\n' '- Treat the repository contracts and this generated prompt as the working checklist. Read source files only when an exact contract detail is needed.'
     printf '%s\n' '- Preserve existing generated outputs as shared release state; only edit the requested new slug, run reports, and ZIP output for this run.'
     printf '%s\n' '- If you need a helper generator script for large file output, keep it under reports/runs/'"$slug"'/ and use it immediately to write the generated files.'
     printf '%s\n' '- After writing files, run the existing scripts and fix only concrete validation failures.'
-    printf '\nExisting generated preview cards to preserve in docs/index.html:\n'
-    if [ -d "$root_dir/docs/themes" ]; then
-      while IFS= read -r existing_preview_dir; do
-        printf -- '- %s\n' "$(basename "$existing_preview_dir")"
-      done < <(find "$root_dir/docs/themes" -mindepth 1 -maxdepth 1 -type d -name '[0-9][0-9][0-9]_nolan_young_theme_*' | sort)
-    fi
+    printf '%s\n' '- The shared gallery already exists. You do not need to enumerate existing gallery cards because docs/index.html is owned by the workflow script.'
   } >> "$output"
 }
 
