@@ -84,6 +84,38 @@ fi
 
 theme_factory_write_run_metadata "$run_dir" "$mode" "$slug" "$prompt_file" "$codex_command" "${OLLAMA_MODEL:-}"
 
+prepare_codex_only_scaffold() {
+  mkdir -p \
+    "$theme_dir" \
+    "$theme_dir/assets/css" \
+    "$theme_dir/assets/js" \
+    "$theme_dir/assets/images" \
+    "$theme_dir/assets/icons" \
+    "$theme_dir/template-parts" \
+    "$theme_dir/page-templates" \
+    "$theme_dir/inc" \
+    "$theme_dir/src" \
+    "$theme_dir/build" \
+    "$theme_dir/docs" \
+    "$theme_dir/accessibility" \
+    "$preview_dir" \
+    "$preview_dir/assets/css" \
+    "$preview_dir/assets/js" \
+    "$preview_dir/assets/images" \
+    "$preview_dir/assets/icons"
+
+  if [ ! -s "$run_dir/generation-progress.md" ]; then
+    {
+      printf '# Generation Progress\n\n'
+      printf 'Workflow scaffold prepared for `%s` before Codex generation.\n' "$slug"
+    } > "$run_dir/generation-progress.md"
+  fi
+}
+
+if [ "$mode" = "codex-only" ]; then
+  prepare_codex_only_scaffold
+fi
+
 if [ "$mode" = "ollama-only" ] && [ -z "$ollama_model" ]; then
   ollama_model="$(theme_factory_select_ollama_model)"
 fi
@@ -112,7 +144,7 @@ append_premium_output_standard() {
     printf '%s\n' 'Create matching WordPress templates and static preview pages with the same header, footer, classes, section order, image assets, and visual hierarchy.'
     printf '%s\n' 'Create all seven required static preview pages: homepage_preview.html, services_preview.html, about-us_preview.html, contact_preview.html, single_services_preview.html, blog_preview.html, and work_preview.html.'
     printf '%s\n' 'Do not use lorem ipsum, placeholder copy, gray boxes, sample text, TODOs, or generic filler.'
-    printf '\nRead and obey these contracts:\n'
+    printf '\nThe key premium requirements are summarized above. Use these contracts as targeted references when exact details are needed:\n'
     printf '%s\n' '- contracts/premium-output-standard.md'
     printf '%s\n' '- contracts/nolan-menu-header.md'
     printf '%s\n' '- contracts/local-image-rules.md'
@@ -126,10 +158,12 @@ append_codex_efficiency_context() {
   local output="$1"
   {
     printf '\n## Codex-Only Efficiency Guardrails\n\n'
+    printf '%s\n' '- The workflow has already created the new theme directory, preview directory, asset directories, and reports/runs progress marker before this Codex command started.'
     printf '%s\n' '- Before writing generated files, read the validation scripts and contracts listed below exactly once so the first output pass targets the current gates.'
     printf '%s\n' '- Required first reads: scripts/validate-theme-structure.sh, scripts/validate-preview.sh, scripts/validate-theme-quality.sh, contracts/required-theme-structure.md, contracts/required-preview-structure.md, contracts/nolan-menu-header.md, and contracts/local-image-rules.md.'
-    printf '%s\n' '- Then create the requested new output tree. Do not spend the first pass doing broad repo archaeology.'
-    printf '%s\n' '- Your first filesystem action must create wp-content/themes/'"$slug"'/, docs/themes/'"$slug"'/, reports/runs/'"$slug"'/generation-progress.md, and a short progress note. Do this before extended planning.'
+    printf '%s\n' '- Do not read additional optional contracts during the first pass unless a required validator output specifically points to one.'
+    printf '%s\n' '- Then write the requested new output tree. Do not spend the first pass doing broad repo archaeology.'
+    printf '%s\n' '- Your first generated-file writes should update reports/runs/'"$slug"'/generation-progress.md and create validator-critical files, not hold the site in hidden reasoning.'
     printf '%s\n' '- Prefer incremental file writes that leave inspectable progress over holding the entire generated site in a long hidden reasoning block.'
     printf '%s\n' '- Do not compose the whole site as one large hidden generator before writing validator-relevant files.'
     printf '%s\n' '- After the progress marker, immediately write the validator-critical roots and assets in small batches: style.css, functions.php, header.php, footer.php, front-page.php, assets/css/theme.css, assets/js/theme.js, docs/themes/'"$slug"'/index.html, docs/themes/'"$slug"'/homepage_preview.html, docs/themes/'"$slug"'/assets/css/preview.css, and docs/themes/'"$slug"'/assets/js/preview.js.'
