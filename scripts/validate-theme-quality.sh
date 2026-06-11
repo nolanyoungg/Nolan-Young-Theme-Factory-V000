@@ -27,6 +27,10 @@ scan_patterns() {
     --exclude='*.jpeg' \
     --exclude='*.webp' \
     --exclude='*.gif' \
+    --exclude='*.css' \
+    --exclude='*.scss' \
+    --exclude='*.js' \
+    --exclude='*.map' \
     'lorem ipsum|todo|placeholder|sample text|coming soon|sample service|example service|replace this|dummy content|image here|gray box|we are passionate about excellence|your success is our mission|we help businesses grow' \
     "$path" 2>/dev/null || true
 }
@@ -42,6 +46,9 @@ else
 
   if [ -f "$theme_dir/assets/css/theme.css" ]; then
     [ "$(wc -c < "$theme_dir/assets/css/theme.css" | tr -d ' ')" -ge 1000 ] || fail "Theme CSS is too small to be meaningful"
+    grep -q ':root' "$theme_dir/assets/css/theme.css" || fail "Theme CSS is missing root variables"
+    grep -q 'body' "$theme_dir/assets/css/theme.css" || fail "Theme CSS is missing body styling"
+    grep -q 'site-header' "$theme_dir/assets/css/theme.css" || fail "Theme CSS is missing header styling"
   else
     fail "Missing theme CSS"
   fi
@@ -66,6 +73,14 @@ if [ -d "$preview_dir" ]; then
   if [ -n "$preview_matches" ]; then
     printf '%s\n' "$preview_matches" >&2
     fail "Preview contains placeholder or filler copy"
+  fi
+
+  if [ -f "$preview_dir/assets/css/preview.css" ]; then
+    grep -q ':root' "$preview_dir/assets/css/preview.css" || fail "Preview CSS is missing root variables"
+    grep -q 'body' "$preview_dir/assets/css/preview.css" || fail "Preview CSS is missing body styling"
+    grep -q 'site-header' "$preview_dir/assets/css/preview.css" || fail "Preview CSS is missing header styling"
+  else
+    fail "Missing preview CSS"
   fi
 fi
 

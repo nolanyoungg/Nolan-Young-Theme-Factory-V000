@@ -42,6 +42,57 @@ required_preview_links=(
   work_preview.html
 )
 
+validate_local_links() {
+  local scan_root="$1"
+  node - "$scan_root" <<'NODE'
+const fs = require('fs');
+const path = require('path');
+
+const scanRoot = process.argv[2];
+const htmlFiles = [];
+
+function walk(dir) {
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const file = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      walk(file);
+    } else if (entry.isFile() && entry.name.endsWith('.html')) {
+      htmlFiles.push(file);
+    }
+  }
+}
+
+walk(scanRoot);
+
+const missing = [];
+for (const file of htmlFiles) {
+  const html = fs.readFileSync(file, 'utf8');
+  const dir = path.dirname(file);
+  for (const match of html.matchAll(/(?:src|href)=["']([^"']+)["']/g)) {
+    const url = match[1];
+    if (/^(https?:|mailto:|tel:|#)/i.test(url)) {
+      continue;
+    }
+
+    const localPath = url.split('#')[0].split('?')[0];
+    if (!localPath) {
+      continue;
+    }
+
+    const resolved = path.normalize(path.join(dir, localPath));
+    if (!fs.existsSync(resolved)) {
+      missing.push(`${path.relative(process.cwd(), file)} -> ${url}`);
+    }
+  }
+}
+
+if (missing.length) {
+  console.error(missing.join('\n'));
+  process.exit(1);
+}
+NODE
+}
+
 for file in "${required_preview_files[@]}"; do
   page="$preview_dir/$file"
   if [ ! -f "$page" ]; then
@@ -81,6 +132,10 @@ fi
 
 if [ -f "$preview_dir/assets/js/preview.js" ]; then
   [ -s "$preview_dir/assets/js/preview.js" ] || fail "Preview JS is empty"
+fi
+
+if [ -d "$preview_dir" ]; then
+  validate_local_links "$preview_dir" || fail "Preview contains missing local src/href targets"
 fi
 
 if [ -f "$root_dir/docs/index.html" ]; then

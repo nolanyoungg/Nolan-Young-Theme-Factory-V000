@@ -43,14 +43,25 @@ scan_for() {
   fi
 }
 
+scan_bad_svg_namespace() {
+  local label="$1"
+  local path="$2"
+  if [ -d "$path" ] && grep -R -I -n 'xmlns="https://www\.w3\.org/2000/svg"' "$path" --include='*.svg' >/dev/null 2>&1; then
+    grep -R -I -n 'xmlns="https://www\.w3\.org/2000/svg"' "$path" --include='*.svg' >&2
+    fail "$label"
+  fi
+}
+
 if [ -d "$theme_dir" ]; then
   scan_for "Blocked secret or unsafe pattern found in theme" "OPENAI_API_KEY|sk-[A-Za-z0-9_-]{20,}|BEGIN [A-Z ]*PRIVATE KEY|eval[[:space:]]*\\(|shell_exec[[:space:]]*\\(|passthru[[:space:]]*\\(|system[[:space:]]*\\(|base64_decode[[:space:]]*\\(|ghp_[A-Za-z0-9]{20,}|password[[:space:]]*[:=][[:space:]]*" "$theme_dir"
   scan_for "Remote script, CDN, or tracking dependency found in theme" "<(script|link|img|source|video|audio)[^>]+(src|href)=[\"'][^\"']*https?://|@import[[:space:]]+url\\([\"']?https?://|url\\([\"']?https?://|//cdn\\.|cdnjs|jsdelivr|unpkg|googletagmanager|gtag\\(|fbq\\(" "$theme_dir"
+  scan_bad_svg_namespace "Theme SVG uses invalid https SVG namespace" "$theme_dir"
 fi
 
 if [ -d "$preview_dir" ]; then
   scan_for "Blocked secret or unsafe pattern found in preview" "OPENAI_API_KEY|sk-[A-Za-z0-9_-]{20,}|BEGIN [A-Z ]*PRIVATE KEY|eval[[:space:]]*\\(|shell_exec[[:space:]]*\\(|passthru[[:space:]]*\\(|system[[:space:]]*\\(|base64_decode[[:space:]]*\\(" "$preview_dir"
   scan_for "Remote script, CDN, or tracking dependency found in preview" "<(script|link|img|source|video|audio)[^>]+(src|href)=[\"'][^\"']*https?://|@import[[:space:]]+url\\([\"']?https?://|url\\([\"']?https?://|//cdn\\.|cdnjs|jsdelivr|unpkg|googletagmanager|gtag\\(|fbq\\(" "$preview_dir"
+  scan_bad_svg_namespace "Preview SVG uses invalid https SVG namespace" "$preview_dir"
 fi
 
 if [ -f "$root_dir/docs/index.html" ]; then
