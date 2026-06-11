@@ -26,6 +26,17 @@ raw_file="$run_dir/codex-final-raw.md"
 printf 'Running Codex final pass with command: %s\n' "$codex_command"
 printf 'Prompt: %s\n' "$prompt_file"
 printf 'Last message: %s\n' "$last_message"
+printf 'Raw transcript: %s\n' "$raw_file"
 
 cmd="$codex_command --output-last-message \"$last_message\" - < \"$prompt_file\""
-bash -lc "$cmd" 2>&1 | tee "$raw_file"
+if [ "${CODEX_STREAM_RAW:-0}" = "1" ]; then
+  bash -lc "$cmd" 2>&1 | tee "$raw_file"
+else
+  set +e
+  bash -lc "$cmd" > "$raw_file" 2>&1
+  status=$?
+  set -e
+  printf 'Codex final pass exited with status %s. Last transcript lines:\n' "$status"
+  tail -80 "$raw_file" || true
+  exit "$status"
+fi
