@@ -529,12 +529,12 @@ docs/themes/NNN_nolan_young_theme_description/
 │   │   └── preview.js
 │   └── images/
 │       ├── README.md
-│       ├── landscape-garden-pathway.jpg
-│       ├── restaurant-plated-dish.jpg
-│       ├── construction-framing-crew.jpg
-│       ├── software-dashboard-interface.jpg
-│       ├── wellness-treatment-room.jpg
-│       └── real-estate-kitchen-detail.jpg
+│       ├── prompt-specific-visual-1.svg
+│       ├── prompt-specific-visual-2.svg
+│       ├── prompt-specific-visual-3.svg
+│       ├── prompt-specific-visual-4.svg
+│       ├── prompt-specific-visual-5.svg
+│       └── prompt-specific-visual-6.svg
 └── README.md
 ```
 
@@ -1198,7 +1198,7 @@ Must check:
 * preview JS exists
 * preview is not empty
 * preview uses local relative assets
-* preview includes local raster image assets
+* preview includes local visual assets that match the prompt; SVG/vector assets are valid when the prompt asks for them
 * preview contains required Nolan-menu data attributes
 * preview trigger buttons include ARIA controls and expanded state
 * `docs/index.html` links to preview

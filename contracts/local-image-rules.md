@@ -21,7 +21,8 @@ The rule is: use real, local, copyright-safe images that fit the exact website b
 - Royalty-free images that are safe for demo/theme redistribution.
 - Original generated demo image assets that are safe to distribute.
 - Existing repo assets clearly documented as safe to reuse.
-- Local SVGs for logos, icons, accents, and decorative overlays.
+- Local SVGs for logos, icons, accents, diagrams, interface visuals, decorative overlays, and full visual panels.
+- CSS-generated visual panels when the prompt asks for non-photo visual treatment.
 
 ## Not Allowed
 
@@ -51,10 +52,10 @@ docs/themes/<theme-slug>/assets/images/
 Use descriptive filenames tied to the generated business category, for example:
 
 ```text
-landscape-garden-pathway.jpg
-restaurant-plated-dish.jpg
-construction-framing-crew.jpg
-software-dashboard-interface.jpg
-wellness-treatment-room.jpg
-real-estate-kitchen-detail.jpg
+home-energy-audit-dashboard.svg
+attic-insulation-cutaway.svg
+service-area-map.svg
+project-result-card.svg
 ```
+
+Do not copy generic example filenames from repository documentation. Asset names must match the actual generated business and prompt.

@@ -35,6 +35,18 @@ scan_patterns() {
     "$path" 2>/dev/null || true
 }
 
+scan_generic_asset_names() {
+  local path="$1"
+  find "$path" -type f \( \
+    -name 'landscape-garden-pathway.*' -o \
+    -name 'restaurant-plated-dish.*' -o \
+    -name 'construction-framing-crew.*' -o \
+    -name 'software-dashboard-interface.*' -o \
+    -name 'wellness-treatment-room.*' -o \
+    -name 'real-estate-kitchen-detail.*' \
+  \) -print 2>/dev/null || true
+}
+
 if [ ! -d "$theme_dir" ]; then
   fail "Missing theme directory: wp-content/themes/$slug"
 else
@@ -42,6 +54,12 @@ else
   if [ -n "$theme_matches" ]; then
     printf '%s\n' "$theme_matches" >&2
     fail "Theme contains placeholder or filler copy"
+  fi
+
+  theme_generic_assets="$(scan_generic_asset_names "$theme_dir")"
+  if [ -n "$theme_generic_assets" ]; then
+    printf '%s\n' "$theme_generic_assets" >&2
+    fail "Theme contains copied generic documentation asset filenames"
   fi
 
   if [ -f "$theme_dir/assets/css/theme.css" ]; then
@@ -73,6 +91,12 @@ if [ -d "$preview_dir" ]; then
   if [ -n "$preview_matches" ]; then
     printf '%s\n' "$preview_matches" >&2
     fail "Preview contains placeholder or filler copy"
+  fi
+
+  preview_generic_assets="$(scan_generic_asset_names "$preview_dir")"
+  if [ -n "$preview_generic_assets" ]; then
+    printf '%s\n' "$preview_generic_assets" >&2
+    fail "Preview contains copied generic documentation asset filenames"
   fi
 
   if [ -f "$preview_dir/assets/css/preview.css" ]; then
