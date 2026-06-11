@@ -56,7 +56,7 @@ else
   grep -R -I -n -E 'wp_enqueue_style' "$theme_dir" >/dev/null 2>&1 || fail "Missing wp_enqueue_style call"
   grep -R -I -n -E 'wp_enqueue_script' "$theme_dir" >/dev/null 2>&1 || fail "Missing wp_enqueue_script call"
   grep -R -I -n -E 'front-page|content-home-hero|content-home-services|content-home-work|content-home-process|content-home-testimonials|content-home-cta' "$theme_dir/front-page.php" "$theme_dir/template-parts" >/dev/null 2>&1 || fail "Homepage template parts are missing or not referenced"
-  grep -R -I -n -E '\.(jpg|jpeg|png|webp)' "$theme_dir" >/dev/null 2>&1 || fail "Theme does not reference local raster images"
+  grep -R -I -n -E '\.(jpg|jpeg|png|webp|svg)' "$theme_dir" >/dev/null 2>&1 || fail "Theme does not reference local visual assets"
   [ -f "$theme_dir/README.md" ] || fail "Missing theme README"
   [ -f "$theme_dir/CHANGELOG.md" ] || fail "Missing CHANGELOG"
 fi

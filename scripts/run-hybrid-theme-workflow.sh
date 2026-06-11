@@ -99,7 +99,7 @@ append_premium_output_standard() {
     printf '%s\n' 'The final output must look like a polished premium company website, not a file checklist.'
     printf '%s\n' 'Build a complete sticky Nolan-menu header with logo, Services/About/Work/Blog nav, and a right-side Contact Us CTA. Contact must not be a primary desktop nav item.'
     printf '%s\n' 'Use the exact Nolan-menu data attributes and ARIA behavior from contracts/nolan-menu-header.md.'
-    printf '%s\n' 'Use local copyright-safe image assets that match the generated business category. Do not hotlink images or use CDNs.'
+    printf '%s\n' 'Use local copyright-safe visual assets that match the generated business category. If the prompt requires SVG artwork only, use local SVG assets and do not create raster photography. Do not hotlink images or use CDNs.'
     printf '%s\n' 'Create matching WordPress templates and static preview pages with the same header, footer, classes, section order, image assets, and visual hierarchy.'
     printf '%s\n' 'Create all seven required static preview pages: homepage_preview.html, services_preview.html, about-us_preview.html, contact_preview.html, single_services_preview.html, blog_preview.html, and work_preview.html.'
     printf '%s\n' 'Do not use lorem ipsum, placeholder copy, gray boxes, sample text, TODOs, or generic filler.'
@@ -324,8 +324,11 @@ build_theme_summary() {
 }
 
 run_npm_build() {
+  if [ ! -f "$theme_dir/package.json" ]; then
+    printf 'No package.json for %s; skipping npm build because runtime assets are expected to be complete.\n' "$slug"
+    return 0
+  fi
   theme_factory_require_cmd npm
-  [ -f "$theme_dir/package.json" ] || theme_factory_fail "Missing package.json: $theme_dir/package.json"
   (
     cd "$theme_dir"
     npm install
@@ -406,7 +409,11 @@ fi
 if [ "$mode" != "ollama-only" ]; then
   codex_prompt="$run_dir/codex-final-prompt.md"
   {
-    printf '# Codex Final Pass\n\n'
+    if [ "$mode" = "codex-only" ]; then
+      printf '# Codex-Only Theme Generation\n\n'
+    else
+      printf '# Codex Final Pass\n\n'
+    fi
     printf 'Theme slug: `%s`\n\n' "$slug"
     printf 'Codex command: `%s`\n\n' "$codex_command"
     printf 'Read these files before editing:\n'
@@ -422,12 +429,23 @@ if [ "$mode" != "ollama-only" ]; then
     printf '%s\n' '- contracts/local-image-rules.md'
     printf '%s\n' '- contracts/required-preview-structure.md'
     printf '\nTask:\n'
-    printf '%s\n' '- finalize the existing generated theme'
-    printf '%s\n' '- preserve the prompt direction and the existing design intent'
-    printf '%s\n' '- fix broken PHP, styling, preview mismatch, build issues, accessibility issues, Nolan-menu behavior, local images, and release readiness problems'
+    if [ "$mode" = "codex-only" ]; then
+      printf '%s\n' '- generate the complete classic WordPress theme from scratch at wp-content/themes/'"$slug"'/'
+      printf '%s\n' '- generate the matching static preview from scratch at docs/themes/'"$slug"'/'
+      printf '%s\n' '- create index.html plus all seven required preview pages'
+      printf '%s\n' '- create complete runtime CSS and JavaScript; do not rely on an unbuilt Sass step'
+      printf '%s\n' '- create all prompt-required local assets and release files'
+      printf '%s\n' '- preserve all existing numbered generated themes, previews, ZIPs, run reports, and docs/index.html gallery links unless the prompt explicitly says this is a repo reset or zero-out run'
+    else
+      printf '%s\n' '- finalize the existing generated theme'
+      printf '%s\n' '- preserve the existing design intent unless it conflicts with the prompt or validation'
+      printf '%s\n' '- do not start from scratch unless the output is unrecoverable'
+    fi
+    printf '%s\n' '- preserve the selected prompt direction'
+    printf '%s\n' '- if the selected prompt says "only generated showcase theme" during a normal next-theme run, interpret that as only within the new theme output; do not remove existing numbered themes or gallery cards'
+    printf '%s\n' '- fix broken PHP, styling, preview mismatch, build issues, accessibility issues, Nolan-menu behavior, local assets, and release readiness problems'
     printf '%s\n' '- ensure all seven static preview pages exist and visually match the WordPress templates'
     printf '%s\n' '- ensure the homepage feels premium, complete, and prompt-specific'
-    printf '%s\n' '- do not start from scratch unless the output is unrecoverable'
     printf '%s\n' '- do not run a second Codex pass without explicit user confirmation'
   } > "$codex_prompt"
   append_premium_output_standard "$codex_prompt"

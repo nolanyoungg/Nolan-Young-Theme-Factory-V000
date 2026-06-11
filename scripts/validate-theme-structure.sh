@@ -83,7 +83,7 @@ done
 
 if [ -f "$theme_dir/style.css" ]; then
   grep -Eq '^[[:space:]]*Theme Name:[[:space:]]*.+' "$theme_dir/style.css" || fail "style.css has no Theme Name header"
-  grep -q 'Nolan Young Theme 000' "$theme_dir/style.css" || fail "style.css Theme Name must use the corrected display naming"
+  grep -Eq 'Nolan Young Theme [0-9]{3}' "$theme_dir/style.css" || fail "style.css Theme Name must use the corrected display naming"
 fi
 
 if [ -f "$theme_dir/functions.php" ]; then
@@ -99,8 +99,8 @@ if [ -f "$theme_dir/assets/js/theme.js" ]; then
 fi
 
 if [ -d "$theme_dir/assets/images" ]; then
-  image_count="$(find "$theme_dir/assets/images" -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \) | wc -l | tr -d ' ')"
-  [ "$image_count" -ge 6 ] || fail "Theme must include at least 6 local raster image assets"
+  image_count="$(find "$theme_dir/assets/images" "$theme_dir/assets/icons" -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' -o -iname '*.svg' \) | wc -l | tr -d ' ')"
+  [ "$image_count" -ge 6 ] || fail "Theme must include at least 6 local visual assets"
 else
   fail "Missing theme image directory"
 fi
