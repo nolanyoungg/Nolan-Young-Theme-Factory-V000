@@ -1,2 +1,0 @@
-<?php
-?><section class="page-hero"><div class="container"><p class="eyebrow">Services</p><h1>Landscape services built around property value.</h1><p>Design, installation, weekly care, hardscapes, and seasonal maintenance from one accountable team.</p></div></section><?php get_template_part( 'template-parts/content-home-services' ); ?><?php get_template_part( 'template-parts/content-home-process' ); ?>

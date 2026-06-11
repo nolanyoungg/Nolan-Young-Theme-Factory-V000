@@ -1,0 +1,14 @@
+<svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 960 640" role="img" aria-label="AstraGrid KPI interface visual">
+  <rect width="960" height="640" rx="42" fill="#0b1020"/>
+  <path d="M80 120h800M80 240h800M80 360h800M80 480h800M160 64v512M320 64v512M480 64v512M640 64v512M800 64v512" stroke="#20d4ff" stroke-opacity=".12"/>
+  <rect x="90" y="84" width="330" height="190" rx="24" fill="#111d31" stroke="#20d4ff" stroke-opacity=".5"/>
+  <rect x="464" y="84" width="406" height="190" rx="24" fill="#0e1a2c" stroke="#20d4ff" stroke-opacity=".25"/>
+  <rect x="90" y="316" width="230" height="220" rx="24" fill="#0e1a2c" stroke="#20d4ff" stroke-opacity=".3"/>
+  <rect x="350" y="316" width="520" height="220" rx="24" fill="#111d31" stroke="#20d4ff" stroke-opacity=".35"/>
+  <circle cx="190" cy="176" r="48" fill="#20d4ff" fill-opacity=".18" stroke="#20d4ff" stroke-width="4"/>
+  <circle cx="300" cy="176" r="26" fill="#b8ff4d" fill-opacity=".85"/>
+  <path d="M220 176h54M570 155h210M570 196h160M570 237h250" stroke="#9bb3c7" stroke-width="14" stroke-linecap="round" stroke-opacity=".82"/>
+  <path d="M152 436h104M152 476h78M418 395c72-90 154 90 226 0s154 90 226 0" fill="none" stroke="#20d4ff" stroke-width="18" stroke-linecap="round"/>
+  <path d="M414 458h360M414 500h250" stroke="#9bb3c7" stroke-width="14" stroke-linecap="round" stroke-opacity=".55"/>
+  <text x="120" y="602" fill="#9bb3c7" font-family="Arial, sans-serif" font-size="52" font-weight="800">KPI</text>
+</svg>

@@ -1,6 +1,0 @@
-Structure validation passed for 001_nolan_young_theme_saas.
-Quality validation passed for 001_nolan_young_theme_saas.
-Preview validation passed for 001_nolan_young_theme_saas.
-Nolan-menu validation passed for 001_nolan_young_theme_saas.
-Security validation passed for 001_nolan_young_theme_saas.
-ZIP freshness validation passed for 001_nolan_young_theme_saas.

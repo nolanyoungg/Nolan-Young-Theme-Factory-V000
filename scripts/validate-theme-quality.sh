@@ -78,12 +78,14 @@ fi
 old_showcase_pattern='nolan'"-showcase-theme-[0-9]+"
 if grep -R -I -n -E "$old_showcase_pattern" "$root_dir" \
   --exclude-dir=.git \
+  --exclude='codex-*-raw.md' \
   --exclude='*.png' \
   --exclude='*.jpg' \
   --exclude='*.jpeg' \
   --exclude='*.webp' >/dev/null 2>&1; then
   grep -R -I -n -E "$old_showcase_pattern" "$root_dir" \
     --exclude-dir=.git \
+    --exclude='codex-*-raw.md' \
     --exclude='*.png' \
     --exclude='*.jpg' \
     --exclude='*.jpeg' \

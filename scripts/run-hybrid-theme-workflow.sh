@@ -66,10 +66,10 @@ if [ "$mode" != "ollama-only" ]; then
   codex_command="${CODEX_COMMAND:-}"
   if [ -z "$codex_command" ]; then
     if theme_factory_is_interactive; then
-      read -r -p "Enter Codex command [codex]: " codex_command
-      codex_command="${codex_command:-codex}"
+      read -r -p "Enter Codex command [codex exec]: " codex_command
+      codex_command="${codex_command:-codex exec}"
     else
-      codex_command="codex"
+      codex_command="codex exec"
     fi
   fi
   theme_factory_require_cmd "${codex_command%% *}"

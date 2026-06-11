@@ -1,2 +1,0 @@
-<?php ?>
-<section class="section final-cta"><img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/ai-assistant-panel.svg'); ?>" alt="AI assistant panel interface"><div><p class="eyebrow">Ready when the workflow is real</p><h2>Bring the messy process. Leave with a scoped automation plan.</h2><p>Share the tools, handoffs, and reporting problems slowing your team down. We will shape a practical first sprint.</p><a class="button" href="<?php echo esc_url(home_url('/contact/')); ?>">Start the scope</a></div></section>
