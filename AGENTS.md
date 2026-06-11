@@ -13,9 +13,13 @@ For every generated theme:
 * The result must look like a polished premium company website.
 * The homepage must be complete and staged with hero, services, work, trust/proof, process, testimonials or proof, industry-appropriate imagery, blog/resource preview, CTA, and footer.
 * The Nolan-menu header system is required.
-* Local copyright-safe raster image assets are required.
+* Local copyright-safe visual assets are required. Use raster photography when the prompt asks for photos; use SVG/vector artwork when the prompt explicitly requires local SVG assets.
 * Static previews must include all seven required pages and visually match the WordPress templates.
 * Validation must fail if preview pages, local images, Nolan-menu attributes, local assets, or required templates are missing.
+
+Generation runs must go through the repository workflow scripts. Do not manually patch, scaffold, or fill generated WordPress theme files, static preview files, ZIP artifacts, or generated output directories before running the selected workflow mode. For Codex-only generation, create or select the prompt in `prompts/pending/`, set the intended slug, and run the Codex-only path through `scripts/run-theme-workflow.sh` or `scripts/run-hybrid-theme-workflow.sh`. Manual edits are allowed only after the scripted run has produced output and only to fix validation failures, workflow bugs, packaging issues, or clearly requested follow-up changes.
+
+Additive generation runs must preserve every existing numbered generated theme, preview, ZIP, run report, and gallery link. A prompt phrase such as "only generated showcase theme" means only within the new theme output unless the task explicitly says this is a repo reset, cleanup, or zero-out run. Do not delete, overwrite, hide, or remove gallery cards for existing `NNN_nolan_young_theme_*` outputs during a normal next-theme generation run.
 
 Authoritative supporting contracts:
 
@@ -1714,6 +1718,3 @@ It must be able to:
 The goal is not to generate toy demos.
 
 The goal is to generate complete, visually impressive, production-oriented WordPress themes with repeatable automation and clear quality gates.
-
-
-

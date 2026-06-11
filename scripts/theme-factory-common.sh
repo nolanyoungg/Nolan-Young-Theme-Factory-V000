@@ -50,7 +50,7 @@ theme_factory_choose_from_menu() {
 
 theme_factory_normalize_mode() {
   local raw="${1:-}"
-  raw="${raw,,}"
+  raw="$(printf '%s' "$raw" | tr '[:upper:]' '[:lower:]')"
   case "$raw" in
     1|hybrid|hybrid-mode|"")
       printf 'hybrid\n'
@@ -345,7 +345,7 @@ const path = require('path');
 const indexPath = process.argv[2];
 const slug = process.argv[3];
 const themeName = process.argv[4];
-  const href = `themes/${slug}/homepage_preview.html`;
+  const href = `themes/${slug}/index.html`;
 const file = fs.readFileSync(indexPath, 'utf8');
 
 if (file.includes(href)) {
