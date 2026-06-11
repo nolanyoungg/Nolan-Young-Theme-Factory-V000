@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "build": "node -e \"const fs=require('fs');fs.copyFileSync('assets/css/theme.css','assets/css/bundle.css');fs.copyFileSync('assets/js/theme.js','assets/js/bundle.js');\""
+  },
+  "devDependencies": {}
+}

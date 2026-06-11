@@ -1,2 +1,0 @@
-<?php
-?><section class="section"><div class="container split"><div><p class="eyebrow">Start</p><h2>Schedule a property walkthrough.</h2><p>Bring the wish list, maintenance concerns, and long-term goals. We will return a clear scope for installation, care, or both.</p><a class="btn" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Contact Us</a></div><img class="feature-img" src="<?php echo nyp_asset_uri( 'images/nursery-planting-detail.png' ); ?>" alt="Nursery plants and landscape materials"></div></section>

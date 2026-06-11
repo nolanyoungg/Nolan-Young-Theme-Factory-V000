@@ -1,1 +1,0 @@
-const fs = require('fs'); const path = require('path'); const root = path.resolve(__dirname, '..'); fs.copyFileSync(path.join(root,'assets/css/theme.css'), path.join(root,'assets/css/bundle.css')); fs.copyFileSync(path.join(root,'assets/js/theme.js'), path.join(root,'assets/js/bundle.js')); console.log('SignalForge assets verified.');
