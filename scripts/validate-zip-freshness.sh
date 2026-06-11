@@ -32,7 +32,9 @@ if [ -f "$zip_path" ]; then
     fail "ZIP contains node_modules or .git"
   fi
 
-  if [ "${GITHUB_ACTIONS:-}" = "true" ] && command -v git >/dev/null 2>&1 && git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  if command -v git >/dev/null 2>&1 &&
+    git rev-parse --is-inside-work-tree >/dev/null 2>&1 &&
+    [ -z "$(git status --porcelain -- "wp-content/themes/$slug" "dist/zipped-themes/$slug.zip")" ]; then
     theme_commit_time="$(git log -1 --format=%ct -- "wp-content/themes/$slug" || true)"
     zip_commit_time="$(git log -1 --format=%ct -- "dist/zipped-themes/$slug.zip" || true)"
     if [ -z "$theme_commit_time" ] || [ -z "$zip_commit_time" ]; then
