@@ -1,0 +1,1 @@
+<article class="card"><h1><?php the_title(); ?></h1><?php astragrid_systems_posted_on(); ?><?php the_content(); ?></article>

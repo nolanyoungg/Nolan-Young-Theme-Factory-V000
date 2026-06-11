@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 360" role="img" aria-labelledby="title desc">
+  <title id="title">Internal tools interface</title>
+  <desc id="desc">Original AstraGrid Systems console interface artwork.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#06111f"/><stop offset="1" stop-color="#0f1d32"/></linearGradient>
+    <linearGradient id="glow" x1="0" x2="1"><stop stop-color="#38d6ff"/><stop offset="1" stop-color="#b8ff4d"/></linearGradient>
+    <filter id="soft"><feGaussianBlur stdDeviation="12"/></filter>
+  </defs>
+  <rect width="560" height="360" rx="28" fill="url(#bg)"/>
+  <path d="M0 74H560M0 148H560M0 222H560M0 296H560M74 0V360M148 0V360M222 0V360M296 0V360M370 0V360M444 0V360" stroke="#24425f" stroke-width="1" opacity="0.34"/>
+  <ellipse cx="430" cy="82" rx="92" ry="38" fill="#38d6ff" opacity="0.14" filter="url(#soft)"/>
+  <ellipse cx="158" cy="292" rx="110" ry="44" fill="#b8ff4d" opacity="0.08" filter="url(#soft)"/>
+  <path d="M58 272C132 112 236 256 308 128C366 24 458 72 508 34" fill="none" stroke="url(#glow)" stroke-width="4" stroke-linecap="round"/>
+  <path d="M86 74h152c24 0 44 20 44 44v58c0 24 20 44 44 44h148" fill="none" stroke="#38d6ff" stroke-width="2" opacity="0.34"/>
+  <rect x="36" y="216" width="82" height="44" rx="10" fill="#10243d" stroke="#38d6ff" opacity="0.78"/><path d="M52 234h42M52 248h28" stroke="#dff8ff" opacity="0.76"/><rect x="144" y="192" width="82" height="62" rx="10" fill="#10243d" stroke="#38d6ff" opacity="0.78"/><path d="M160 210h42M160 224h28" stroke="#dff8ff" opacity="0.76"/><rect x="252" y="168" width="82" height="80" rx="10" fill="#10243d" stroke="#38d6ff" opacity="0.78"/><path d="M268 186h42M268 200h28" stroke="#dff8ff" opacity="0.76"/><rect x="360" y="144" width="82" height="98" rx="10" fill="#10243d" stroke="#38d6ff" opacity="0.78"/><path d="M376 162h42M376 176h28" stroke="#dff8ff" opacity="0.76"/>
+  <rect x="42" y="38" width="202" height="72" rx="16" fill="#081827" stroke="#38d6ff" opacity="0.92"/>
+  <path d="M66 66h92M66 86h128" stroke="#dff8ff" stroke-width="7" stroke-linecap="round" opacity="0.72"/>
+  <rect x="276" y="250" width="214" height="70" rx="18" fill="#0b1828" stroke="#b8ff4d" opacity="0.88"/>
+  <path d="M304 278h122M304 298h74" stroke="#dff8ff" stroke-width="6" stroke-linecap="round" opacity="0.7"/>
+</svg>

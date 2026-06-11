@@ -1,0 +1,1 @@
+<?php get_header(); ?><section class="page-hero"><div class="container"><p class="eyebrow">Search</p><h1><?php printf( esc_html__( 'Search results for %s', '002_nolan_young_theme_astragrid_systems' ), esc_html( get_search_query() ) ); ?></h1><?php get_search_form(); ?></div></section><?php get_footer(); ?>

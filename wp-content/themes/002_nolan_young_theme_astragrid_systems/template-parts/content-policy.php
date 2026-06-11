@@ -1,0 +1,1 @@
+<article class="card"><h2>Policy content</h2><p>Use this area for privacy, terms, and operating policy details.</p></article>

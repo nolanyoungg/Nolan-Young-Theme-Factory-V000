@@ -1,0 +1,1 @@
+<?php get_header(); ?><section class="page-hero"><div class="container"><p class="eyebrow">403</p><h1>This operations route is restricted.</h1><p class="lede">Return to the main AstraGrid Systems site.</p></div></section><?php get_footer(); ?>

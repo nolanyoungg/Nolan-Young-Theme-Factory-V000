@@ -122,6 +122,31 @@ append_premium_output_standard() {
   } >> "$output"
 }
 
+append_codex_efficiency_context() {
+  local output="$1"
+  {
+    printf '\n## Codex-Only Efficiency Guardrails\n\n'
+    printf '%s\n' '- Start by creating the requested new output tree. Do not spend the first pass doing broad repo archaeology.'
+    printf '%s\n' '- Your first filesystem action must create wp-content/themes/'"$slug"'/, docs/themes/'"$slug"'/, reports/runs/'"$slug"'/generation-progress.md, and a short progress note. Do this before extended planning.'
+    printf '%s\n' '- Prefer incremental file writes that leave inspectable progress over holding the entire generated site in a long hidden reasoning block.'
+    printf '%s\n' '- Do not compose the whole site as one large hidden generator before writing validator-relevant files.'
+    printf '%s\n' '- After the progress marker, immediately write the validator-critical roots and assets in small batches: style.css, functions.php, header.php, footer.php, front-page.php, assets/css/theme.css, assets/js/theme.js, docs/themes/'"$slug"'/index.html, docs/themes/'"$slug"'/homepage_preview.html, docs/themes/'"$slug"'/assets/css/preview.css, and docs/themes/'"$slug"'/assets/js/preview.js.'
+    printf '%s\n' '- Then fill the remaining required template parts, preview pages, SVG assets, docs/index.html gallery card, package ZIP, and validation fixes.'
+    printf '%s\n' '- Do not read memory files under /Users/nolany/.codex/memories during this generation run.'
+    printf '%s\n' '- Do not list or inspect full existing generated theme trees unless validation failure output specifically points to one.'
+    printf '%s\n' '- Treat the repository contracts and this generated prompt as the working checklist. Read source files only when an exact contract detail is needed.'
+    printf '%s\n' '- Preserve existing generated outputs as shared release state; only edit the requested new slug, docs/index.html, run reports, and ZIP output for this run.'
+    printf '%s\n' '- If you need a helper generator script for large file output, keep it under reports/runs/'"$slug"'/ and use it immediately to write the generated files.'
+    printf '%s\n' '- After writing files, run the existing scripts and fix only concrete validation failures.'
+    printf '\nExisting generated preview cards to preserve in docs/index.html:\n'
+    if [ -d "$root_dir/docs/themes" ]; then
+      while IFS= read -r existing_preview_dir; do
+        printf -- '- %s\n' "$(basename "$existing_preview_dir")"
+      done < <(find "$root_dir/docs/themes" -mindepth 1 -maxdepth 1 -type d -name '[0-9][0-9][0-9]_nolan_young_theme_*' | sort)
+    fi
+  } >> "$output"
+}
+
 append_repo_context() {
   local output="$1"
   {
@@ -425,7 +450,7 @@ if [ "$mode" != "ollama-only" ]; then
     fi
     printf 'Theme slug: `%s`\n\n' "$slug"
     printf 'Codex command: `%s`\n\n' "$codex_command"
-    printf 'Read these files before editing:\n'
+    printf 'Use these files as contract references when exact details are needed:\n'
     printf '%s\n' '- AGENTS.md'
     printf '%s\n' '- agents/00-orchestrator.md'
     printf '%s\n' '- codex/codex-final-pass.md'
@@ -460,6 +485,9 @@ if [ "$mode" != "ollama-only" ]; then
     printf '%s\n' '- ensure the homepage feels premium, complete, and prompt-specific'
     printf '%s\n' '- do not run a second Codex pass without explicit user confirmation'
   } > "$codex_prompt"
+  if [ "$mode" = "codex-only" ]; then
+    append_codex_efficiency_context "$codex_prompt"
+  fi
   append_premium_output_standard "$codex_prompt"
   {
     printf '\n## User Prompt\n\n'

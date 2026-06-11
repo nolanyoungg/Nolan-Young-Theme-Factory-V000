@@ -1,0 +1,1 @@
+{"scripts":{"build":"node -e \"require('fs').copyFileSync('assets/js/theme.js','assets/js/bundle.js');require('fs').copyFileSync('assets/css/theme.css','assets/css/bundle.css')\""},"devDependencies":{}}
