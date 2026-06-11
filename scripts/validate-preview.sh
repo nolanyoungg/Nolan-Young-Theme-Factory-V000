@@ -85,6 +85,13 @@ fi
 
 if [ -f "$root_dir/docs/index.html" ]; then
   grep -Eq "themes/$slug/(index|homepage_preview)\\.html" "$root_dir/docs/index.html" || fail "docs/index.html does not link to the preview"
+  while IFS= read -r gallery_preview_dir; do
+    gallery_slug="$(basename "$gallery_preview_dir")"
+    grep -Eq "themes/$gallery_slug/(index|homepage_preview)\\.html" "$root_dir/docs/index.html" || fail "docs/index.html does not link to generated preview: $gallery_slug"
+  done < <(
+    find "$root_dir/docs/themes" -mindepth 1 -maxdepth 1 -type d \
+      -name '[0-9][0-9][0-9]_nolan_young_theme_*' | sort
+  )
 else
   fail "Missing docs/index.html"
 fi

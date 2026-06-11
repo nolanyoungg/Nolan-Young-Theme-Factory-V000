@@ -21,6 +21,8 @@ Generation runs must go through the repository workflow scripts. Do not manually
 
 Additive generation runs must preserve every existing numbered generated theme, preview, ZIP, run report, and gallery link. A prompt phrase such as "only generated showcase theme" means only within the new theme output unless the task explicitly says this is a repo reset, cleanup, or zero-out run. Do not delete, overwrite, hide, or remove gallery cards for existing `NNN_nolan_young_theme_*` outputs during a normal next-theme generation run.
 
+Completed prompt history is not generated preview output. Preserve `prompts/completed/` during additive runs and reset/cleanup runs unless the user explicitly says to delete completed prompt history.
+
 Authoritative supporting contracts:
 
 ```text

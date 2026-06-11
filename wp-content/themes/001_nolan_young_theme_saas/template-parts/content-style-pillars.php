@@ -1,0 +1,1 @@
+<section class="section pillars"><h2>Style pillars</h2><div class="card-grid three"><article><h3>Sharp</h3><p>Angular panels and crisp contrast.</p></article><article><h3>Fast</h3><p>Local assets and lightweight JavaScript.</p></article><article><h3>Clear</h3><p>Interfaces that explain the next action.</p></article></div></section>
