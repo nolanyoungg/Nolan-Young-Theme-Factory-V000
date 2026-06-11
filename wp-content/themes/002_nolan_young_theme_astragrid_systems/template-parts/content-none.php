@@ -1,0 +1,1 @@
+<article class="card"><h2><?php esc_html_e( 'No matching AstraGrid content found', '002_nolan_young_theme_astragrid_systems' ); ?></h2><p><?php esc_html_e( 'Try a different search or return to the main operations pages.', '002_nolan_young_theme_astragrid_systems' ); ?></p></article>

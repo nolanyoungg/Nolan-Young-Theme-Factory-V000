@@ -1,0 +1,1 @@
+<?php get_header(); ?><section class="page-hero"><div class="container"><p class="eyebrow">404</p><h1>The requested route is not on the grid.</h1><p class="lede">Use the navigation to return to AstraGrid Systems.</p></div></section><?php get_footer(); ?>
