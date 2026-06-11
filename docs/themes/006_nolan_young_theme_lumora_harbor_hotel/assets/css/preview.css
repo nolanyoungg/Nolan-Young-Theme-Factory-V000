@@ -1,0 +1,123 @@
+/* Preview CSS for Lumora Harbor Hotel */
+
+:root {
+  --lh-bg: #fbf7ef;
+  --lh-bg-soft: #eef5f3;
+  --lh-dark: #0d2430;
+  --lh-brand: #1f6f78;
+  --lh-brand-deep: #174f58;
+  --lh-gold: #c89b5f;
+  --lh-text: #17262c;
+  --lh-muted: #68767a;
+  --lh-border: #d8ddd8;
+  --lh-surface: #ffffff;
+  --lh-hero: #102c38;
+  --lh-hero-text: #fffaf1;
+  --lh-shadow: 0 24px 72px rgba(13, 36, 48, 0.12);
+  --lh-radius-xl: 32px;
+  --lh-radius-lg: 24px;
+  --lh-max: 1240px;
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--lh-text);
+  background:
+    radial-gradient(circle at top left, rgba(31, 111, 120, 0.08), transparent 30%),
+    radial-gradient(circle at top right, rgba(201, 155, 95, 0.08), transparent 28%),
+    var(--lh-bg);
+  line-height: 1.65;
+}
+img, svg { display: block; max-width: 100%; }
+a { color: inherit; text-decoration-thickness: 0.08em; text-underline-offset: 0.16em; }
+.site-shell { overflow: clip; }
+.site-header {
+  position: sticky; top: 0; z-index: 80; backdrop-filter: blur(18px);
+  background: rgba(255, 250, 241, 0.93); border-bottom: 1px solid rgba(23, 38, 44, 0.12);
+}
+.site-header.is-scrolled { background: rgba(255, 250, 241, 0.98); box-shadow: 0 16px 40px rgba(13, 36, 48, 0.08); }
+.site-header__inner, .site-footer__inner, .section-inner { width: min(100% - 2rem, var(--lh-max)); margin: 0 auto; }
+.brand { display: inline-flex; align-items: center; gap: 0.85rem; font-weight: 700; }
+.brand__mark { width: 2.6rem; height: 2.6rem; border-radius: 999px; background: linear-gradient(145deg, var(--lh-brand), var(--lh-brand-deep)); box-shadow: 0 10px 24px rgba(31, 111, 120, 0.3); }
+.button { display: inline-flex; align-items: center; justify-content: center; gap: 0.55rem; min-height: 48px; padding: 0.9rem 1.25rem; border-radius: 999px; border: 1px solid transparent; font-weight: 650; }
+.button--primary { background: var(--lh-brand); color: #fff; }
+.button--secondary { background: #fff; color: var(--lh-text); border-color: var(--lh-gold); }
+.button--ghost { color: var(--lh-brand); background: transparent; padding-inline: 0.2rem; }
+.menu-backdrop { position: fixed; inset: 0; background: rgba(13, 36, 48, 0.36); opacity: 0; pointer-events: none; transition: opacity 180ms ease; }
+.menu-backdrop.is-visible { opacity: 1; pointer-events: auto; }
+.site-nav { display: flex; justify-content: center; align-items: center; gap: 0.65rem; flex-wrap: wrap; }
+.site-nav__link, .site-nav__trigger { display: inline-flex; align-items: center; justify-content: center; min-height: 46px; padding: 0.75rem 1rem; border: 0; background: transparent; border-radius: 999px; color: var(--lh-text); cursor: pointer; }
+.site-nav__trigger::after { content: ""; width: 0.45rem; height: 0.45rem; margin-left: 0.55rem; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg) translateY(-0.1rem); }
+.button:hover, .site-nav__link:hover, .site-nav__trigger:hover { background: rgba(31, 111, 120, 0.08); }
+.site-header__actions { display: flex; justify-content: flex-end; align-items: center; gap: 0.75rem; }
+.mobile-toggle { display: none; }
+.menu-panel { position: absolute; left: 50%; transform: translateX(-50%) translateY(10px); top: calc(100% + 0.45rem); width: min(100% - 1.5rem, 1040px); padding: 1rem; border-radius: 30px; background: rgba(255, 255, 255, 0.98); box-shadow: var(--lh-shadow); border: 1px solid rgba(23, 38, 44, 0.08); }
+.menu-panel[hidden] { display: none !important; }
+.menu-panel__grid { display: grid; grid-template-columns: 0.72fr 1.28fr; gap: 1rem; }
+.menu-card-list { display: grid; gap: 0.8rem; }
+.menu-card { display: grid; grid-template-columns: 88px 1fr; gap: 0.9rem; align-items: stretch; padding: 0.8rem; border-radius: 18px; background: #fff; border: 1px solid rgba(23, 38, 44, 0.08); text-decoration: none; }
+.menu-card__visual { border-radius: 14px; overflow: hidden; min-height: 76px; }
+.menu-card__body { display: grid; gap: 0.35rem; align-content: center; }
+.menu-card__title { font-weight: 650; }
+.menu-card__text { color: var(--lh-muted); font-size: 0.93rem; }
+.menu-rail-buttons { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.menu-rail-buttons [data-rail-item] { border: 1px solid var(--lh-border); background: #fff; border-radius: 999px; min-height: 40px; padding: 0.55rem 0.9rem; cursor: pointer; }
+.menu-rail-buttons [data-rail-item].is-active { background: rgba(31, 111, 120, 0.09); border-color: rgba(31, 111, 120, 0.36); }
+.menu-rail-content > section { display: none; gap: 1rem; padding: 1rem; border-radius: 22px; background: linear-gradient(135deg, rgba(238, 245, 243, 0.9), rgba(255, 255, 255, 0.95)); }
+.menu-rail-content > section.is-active { display: grid; }
+.hero { position: relative; padding: clamp(3.5rem, 7vw, 6.25rem) 0 clamp(2.5rem, 5vw, 4rem); background: linear-gradient(180deg, rgba(16, 44, 56, 0.06), rgba(16, 44, 56, 0.12)), linear-gradient(135deg, #102c38 0%, #173e4d 58%, #0f2f3c 100%); color: var(--lh-hero-text); overflow: hidden; }
+.hero::before, .hero::after { content: ""; position: absolute; inset: auto auto 0 0; width: 56vw; height: 56vw; border-radius: 50%; background: radial-gradient(circle, rgba(217, 176, 111, 0.15), transparent 56%); transform: translate(-26%, 40%); pointer-events: none; animation: drift 14s ease-in-out infinite alternate; }
+.hero::after { inset: 10% 0 auto auto; width: 42vw; height: 42vw; animation-duration: 18s; }
+.hero__grid { position: relative; display: grid; grid-template-columns: minmax(0, 1.02fr) minmax(310px, 0.98fr); gap: clamp(1.5rem, 3vw, 3.2rem); align-items: center; }
+.eyebrow { display: inline-flex; align-items: center; gap: 0.55rem; padding: 0.45rem 0.8rem; border-radius: 999px; background: rgba(255, 250, 241, 0.08); color: rgba(255, 250, 241, 0.88); text-transform: uppercase; letter-spacing: 0.16em; font-size: 0.74rem; }
+.hero h1, .section-title { font-family: Georgia, "Times New Roman", Times, serif; line-height: 0.98; letter-spacing: -0.04em; margin: 0; }
+.hero h1 { font-size: clamp(3rem, 7vw, 6rem); max-width: 10ch; margin-top: 1rem; }
+.hero p { max-width: 60ch; margin: 1.2rem 0 0; font-size: 1.08rem; color: rgba(255, 250, 241, 0.87); }
+.hero__actions { display: flex; flex-wrap: wrap; gap: 0.85rem; margin-top: 1.8rem; }
+.hero__visual { min-height: 620px; display: grid; gap: 1rem; }
+.hero-card { border-radius: var(--lh-radius-xl); background: rgba(255, 250, 241, 0.94); color: var(--lh-text); box-shadow: var(--lh-shadow); border: 1px solid rgba(255, 250, 241, 0.45); overflow: hidden; }
+.hero-card--main { min-height: 420px; display: grid; align-items: end; padding: 1.25rem; background: linear-gradient(180deg, rgba(16, 44, 56, 0.06), rgba(16, 44, 56, 0.52)), url("../images/harbor-sunrise-suite-balcony.svg") center/cover no-repeat, rgba(255, 250, 241, 0.94); }
+.hero-card--main .hero-card__caption { color: #fffaf1; max-width: 28ch; }
+.booking-bar { position: relative; z-index: 2; margin-top: -2.25rem; }
+.booking-bar__inner { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.85rem; padding: 1rem; border-radius: 28px; background: rgba(255, 250, 241, 0.95); border: 1px solid rgba(23, 38, 44, 0.08); box-shadow: var(--lh-shadow); }
+.booking-bar input, .booking-bar select { width: 100%; min-height: 50px; padding: 0.9rem 1rem; border-radius: 16px; border: 1px solid rgba(23, 38, 44, 0.14); background: #fffdf8; color: var(--lh-text); }
+.section { padding: clamp(3.2rem, 5vw, 5rem) 0; }
+.section--soft { background: linear-gradient(180deg, rgba(238, 245, 243, 0.88), rgba(255, 255, 255, 0)); }
+.section-head { display: grid; gap: 0.8rem; max-width: 54rem; margin-bottom: 1.9rem; }
+.section-title { color: var(--lh-text); font-size: clamp(2rem, 4.2vw, 4rem); }
+.section-copy { margin: 0; color: var(--lh-muted); font-size: 1.02rem; max-width: 58ch; }
+.grid-cards { display: grid; gap: 1rem; grid-template-columns: repeat(12, minmax(0, 1fr)); }
+.card { padding: 1.1rem; border-radius: var(--lh-radius-lg); background: var(--lh-surface); border: 1px solid rgba(23, 38, 44, 0.08); box-shadow: 0 14px 32px rgba(13, 36, 48, 0.09); }
+.card--visual { min-height: 290px; display: grid; align-content: end; }
+.card--visual[data-visual="lobby"] { background: linear-gradient(180deg, rgba(13, 36, 48, 0.12), rgba(13, 36, 48, 0.58)), url("../images/boutique-hotel-lobby-lounge.svg") center/cover no-repeat; }
+.card--visual[data-visual="suite"] { background: linear-gradient(180deg, rgba(13, 36, 48, 0.08), rgba(13, 36, 48, 0.64)), url("../images/king-suite-interior-card.svg") center/cover no-repeat; }
+.card--visual[data-visual="dining"] { background: linear-gradient(180deg, rgba(13, 36, 48, 0.08), rgba(13, 36, 48, 0.64)), url("../images/waterfront-dining-table.svg") center/cover no-repeat; }
+.card--visual[data-visual="spa"] { background: linear-gradient(180deg, rgba(13, 36, 48, 0.08), rgba(13, 36, 48, 0.64)), url("../images/spa-wellness-ritual-panel.svg") center/cover no-repeat; }
+.card--visual[data-visual="wedding"] { background: linear-gradient(180deg, rgba(13, 36, 48, 0.08), rgba(13, 36, 48, 0.64)), url("../images/intimate-wedding-terrace.svg") center/cover no-repeat; }
+.card--visual[data-visual="retreat"] { background: linear-gradient(180deg, rgba(13, 36, 48, 0.08), rgba(13, 36, 48, 0.64)), url("../images/executive-retreat-meeting-room.svg") center/cover no-repeat; }
+.two-column { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1.25rem; align-items: start; }
+.testimonial-grid { display: grid; gap: 1rem; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.testimonial { padding: 1.2rem; border-radius: 22px; background: #fff; border: 1px solid rgba(23, 38, 44, 0.08); }
+.site-footer { padding: 3.25rem 0 2rem; background: var(--lh-dark); color: rgba(255, 250, 241, 0.86); }
+.site-footer a { color: inherit; }
+.site-footer__grid { display: grid; gap: 1.5rem; grid-template-columns: 1.3fr 0.8fr 0.8fr 1fr; margin-top: 1.2rem; }
+.site-footer__intro { display: grid; gap: 1rem; }
+.story-panel { padding: 1.4rem; border-radius: var(--lh-radius-xl); background: linear-gradient(180deg, rgba(238, 245, 243, 0.9), rgba(255, 255, 255, 0.94)); border: 1px solid rgba(23, 38, 44, 0.08); box-shadow: var(--lh-shadow); }
+.footer-cta { display: grid; gap: 0.8rem; }
+.footer-links { display: grid; gap: 0.55rem; list-style: none; padding: 0; margin: 0; }
+.contact-form, .search-form, .newsletter { display: grid; gap: 0.9rem; }
+.contact-form label, .newsletter label, .search-form label { display: grid; gap: 0.35rem; }
+.contact-form input, .contact-form select, .contact-form textarea, .newsletter input, .search-form input { width: 100%; min-height: 50px; padding: 0.9rem 1rem; border-radius: 16px; border: 1px solid rgba(23, 38, 44, 0.14); background: #fffdf8; color: var(--lh-text); }
+.comment-list { display: grid; gap: 1rem; list-style: none; padding: 0; }
+.redirect-card { min-height: 100vh; display: grid; place-items: center; text-align: center; padding: 2rem; }
+.reveal { opacity: 0; transform: translateY(14px); transition: opacity 480ms ease, transform 480ms ease; }
+.reveal.is-visible { opacity: 1; transform: translateY(0); }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+@keyframes drift { from { transform: translate(-26%, 40%) scale(1); } to { transform: translate(-22%, 34%) scale(1.05); } }
+@media (max-width: 1080px) { .site-header__inner, .hero__grid, .two-column, .site-footer__grid, .menu-panel__grid, .testimonial-grid, .booking-bar__inner, .grid-cards { grid-template-columns: 1fr; } .grid-cards .card { grid-column: auto; } }
+@media (max-width: 780px) { .site-header__inner { grid-template-columns: auto auto; min-height: 80px; } .site-nav, .site-header__actions .button--secondary { display: none; } .mobile-toggle { display: inline-flex; } .hero { padding-top: 2.75rem; } .hero__visual { min-height: 420px; } .menu-panel { position: fixed; inset: 0; width: auto; border-radius: 0; transform: none; overflow: auto; padding-top: 5.5rem; } }

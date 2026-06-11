@@ -1,0 +1,47 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/theme.json",
+  "version": 2,
+  "settings": {
+    "color": {
+      "custom": true,
+      "palette": [
+        { "slug": "background", "color": "#fbf7ef", "name": "Background" },
+        { "slug": "background-soft", "color": "#eef5f3", "name": "Background Soft" },
+        { "slug": "brand", "color": "#1f6f78", "name": "Brand" },
+        { "slug": "accent", "color": "#d96f54", "name": "Accent" },
+        { "slug": "gold", "color": "#c89b5f", "name": "Gold" },
+        { "slug": "text", "color": "#17262c", "name": "Text" }
+      ]
+    },
+    "typography": {
+      "customFontSize": true,
+      "fontFamilies": [
+        {
+          "fontFamily": "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+          "name": "System Sans",
+          "slug": "system-sans"
+        },
+        {
+          "fontFamily": "Georgia, 'Times New Roman', Times, serif",
+          "name": "Editorial Serif",
+          "slug": "editorial-serif"
+        }
+      ]
+    },
+    "layout": {
+      "contentSize": "780px",
+      "wideSize": "1240px"
+    }
+  },
+  "styles": {
+    "color": {
+      "background": "#fbf7ef",
+      "text": "#17262c"
+    },
+    "typography": {
+      "fontFamily": "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+      "lineHeight": "1.65"
+    }
+  }
+}
+
