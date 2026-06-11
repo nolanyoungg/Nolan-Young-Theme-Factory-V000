@@ -436,6 +436,7 @@ if [ "$mode" != "ollama-only" ]; then
       printf '%s\n' '- create complete runtime CSS and JavaScript; do not rely on an unbuilt Sass step'
       printf '%s\n' '- create all prompt-required local assets and release files'
       printf '%s\n' '- preserve all existing numbered generated themes, previews, ZIPs, run reports, and docs/index.html gallery links unless the prompt explicitly says this is a repo reset or zero-out run'
+      printf '%s\n' '- preserve prompts/completed/ history unless the user explicitly says to delete completed prompt history'
     else
       printf '%s\n' '- finalize the existing generated theme'
       printf '%s\n' '- preserve the existing design intent unless it conflicts with the prompt or validation'

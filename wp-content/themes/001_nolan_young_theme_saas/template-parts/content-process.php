@@ -1,0 +1,3 @@
+<?php ?>
+<section class="section process-section"><p class="eyebrow">Process</p><h2>From messy workflow to maintainable system.</h2><div class="timeline"><article><span>01</span><h3>Map the friction</h3><p>We document owners, handoffs, source systems, exceptions, and the decisions a new tool must support.</p></article><article><span>02</span><h3>Ship a thin slice</h3><p>A focused prototype proves the interface, automation rules, permissions, and reporting grain before a larger build.</p></article><article><span>03</span><h3>Harden the operating layer</h3><p>We add QA paths, training notes, monitoring cues, and support documentation so the team can rely on the system.</p></article></div></section>
+
