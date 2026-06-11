@@ -126,24 +126,29 @@ append_codex_efficiency_context() {
   local output="$1"
   {
     printf '\n## Codex-Only Efficiency Guardrails\n\n'
-    printf '%s\n' '- Start by creating the requested new output tree. Do not spend the first pass doing broad repo archaeology.'
+    printf '%s\n' '- Before writing generated files, read the validation scripts and contracts listed below exactly once so the first output pass targets the current gates.'
+    printf '%s\n' '- Required first reads: scripts/validate-theme-structure.sh, scripts/validate-preview.sh, scripts/validate-theme-quality.sh, contracts/required-theme-structure.md, contracts/required-preview-structure.md, contracts/nolan-menu-header.md, and contracts/local-image-rules.md.'
+    printf '%s\n' '- Then create the requested new output tree. Do not spend the first pass doing broad repo archaeology.'
     printf '%s\n' '- Your first filesystem action must create wp-content/themes/'"$slug"'/, docs/themes/'"$slug"'/, reports/runs/'"$slug"'/generation-progress.md, and a short progress note. Do this before extended planning.'
     printf '%s\n' '- Prefer incremental file writes that leave inspectable progress over holding the entire generated site in a long hidden reasoning block.'
     printf '%s\n' '- Do not compose the whole site as one large hidden generator before writing validator-relevant files.'
     printf '%s\n' '- After the progress marker, immediately write the validator-critical roots and assets in small batches: style.css, functions.php, header.php, footer.php, front-page.php, assets/css/theme.css, assets/js/theme.js, docs/themes/'"$slug"'/index.html, docs/themes/'"$slug"'/homepage_preview.html, docs/themes/'"$slug"'/assets/css/preview.css, and docs/themes/'"$slug"'/assets/js/preview.js.'
-    printf '%s\n' '- Then fill the remaining required template parts, preview pages, SVG assets, docs/index.html gallery card, package ZIP, and validation fixes.'
+    printf '%s\n' '- Then fill the remaining required template parts, preview pages, prompt-specific local assets, package ZIP, and validation fixes.'
+    printf '%s\n' '- Do not edit docs/index.html. The workflow script owns the shared gallery update after generated files exist.'
     printf '%s\n' '- Do not read memory files under /Users/nolany/.codex/memories during this generation run.'
     printf '%s\n' '- Do not list or inspect full existing generated theme trees unless validation failure output specifically points to one.'
+    printf '%s\n' '- Do not copy literal example filenames from repository docs. Asset filenames must be business-specific, such as home-audit-scorecard.svg or insulation-plan-map.svg.'
+    printf '%s\n' '- Do not use filenames like prompt-specific-visual-1.svg, icon1.svg, or generic numbered placeholders.'
+    printf '%s\n' '- Do not write headings or template parts that include "Preview", "Service Detail", "Service Highlight", "All Services", or other checklist filler. Use finished business copy.'
+    printf '%s\n' '- Static preview pages and template parts must be substantial enough to inspect visually; one-line checklist files are a failure even if they satisfy structure.'
+    printf '%s\n' '- Do not use example.com in generated theme headers or links.'
     printf '%s\n' '- Treat the repository contracts and this generated prompt as the working checklist. Read source files only when an exact contract detail is needed.'
-    printf '%s\n' '- Preserve existing generated outputs as shared release state; only edit the requested new slug, docs/index.html, run reports, and ZIP output for this run.'
+    printf '%s\n' '- Preserve existing generated outputs as shared release state; only edit the requested new slug, run reports, and ZIP output for this run.'
     printf '%s\n' '- If you need a helper generator script for large file output, keep it under reports/runs/'"$slug"'/ and use it immediately to write the generated files.'
-    printf '%s\n' '- After writing files, run the existing scripts and fix only concrete validation failures.'
-    printf '\nExisting generated preview cards to preserve in docs/index.html:\n'
-    if [ -d "$root_dir/docs/themes" ]; then
-      while IFS= read -r existing_preview_dir; do
-        printf -- '- %s\n' "$(basename "$existing_preview_dir")"
-      done < <(find "$root_dir/docs/themes" -mindepth 1 -maxdepth 1 -type d -name '[0-9][0-9][0-9]_nolan_young_theme_*' | sort)
-    fi
+    printf '%s\n' '- After writing files, do not run validate-all.sh or validate-preview.sh inside Codex. The workflow script updates docs/index.html after Codex exits, then runs full validation.'
+    printf '%s\n' '- Inside Codex, only run slug-local checks that do not depend on docs/index.html gallery state, such as PHP lint, validate-theme-structure.sh, validate-theme-quality.sh, validate-nolan-menu.sh, and validate-security.sh.'
+    printf '%s\n' '- Keep command output concise. Do not print full generated diffs or full file contents after every patch.'
+    printf '%s\n' '- The shared gallery already exists. You do not need to enumerate existing gallery cards because docs/index.html is owned by the workflow script.'
   } >> "$output"
 }
 
@@ -280,7 +285,7 @@ Task:
 - implement Nolan-menu behavior in local preview JS
 - use only local assets
 - emit only file blocks using the required protocol
-- update docs/index.html so it links to the preview
+- do not edit docs/index.html; the workflow script updates the shared preview gallery
 
 Theme slug: $slug
 Selected Ollama model: ${ollama_model:-unknown}
@@ -470,7 +475,8 @@ if [ "$mode" != "ollama-only" ]; then
       printf '%s\n' '- create complete runtime CSS and JavaScript; do not rely on an unbuilt Sass step'
       printf '%s\n' '- create all prompt-required local assets and release files'
       printf '%s\n' '- create this slug as a fresh generated output; do not copy, rename, or migrate an existing numbered generated theme as the new theme unless the user explicitly asks for a clone'
-      printf '%s\n' '- preserve all existing numbered generated themes, previews, ZIPs, run reports, and docs/index.html gallery links unless the prompt explicitly says this is a repo reset or zero-out run'
+      printf '%s\n' '- do not edit docs/index.html; the workflow script updates the shared preview gallery after generated files exist'
+      printf '%s\n' '- preserve all existing numbered generated themes, previews, ZIPs, run reports, and gallery links unless the prompt explicitly says this is a repo reset or zero-out run'
       printf '%s\n' '- preserve prompts/completed/ history unless the user explicitly says to delete completed prompt history'
       printf '%s\n' '- if the prompt contains stale model or reasoning text, ignore it; the Codex command above is the authoritative model and reasoning selection'
     else
@@ -497,6 +503,7 @@ if [ "$mode" != "ollama-only" ]; then
   run_codex_final_pass "$codex_prompt"
   run_npm_build
   package_theme
+  theme_factory_update_gallery_index "$slug" "$(theme_factory_theme_name_from_style "$theme_dir/style.css")"
 
   if ! validate_theme; then
     printf '\nValidation failed after Codex pass.\n' >&2
@@ -516,6 +523,7 @@ if [ "$mode" != "ollama-only" ]; then
           run_codex_final_pass "$fixer_prompt"
           run_npm_build
           package_theme
+          theme_factory_update_gallery_index "$slug" "$(theme_factory_theme_name_from_style "$theme_dir/style.css")"
           validate_theme
           ;;
         2)
@@ -525,6 +533,7 @@ if [ "$mode" != "ollama-only" ]; then
             run_ollama_stage review-fix "$fixer_prompt"
             run_npm_build
             package_theme
+            theme_factory_update_gallery_index "$slug" "$(theme_factory_theme_name_from_style "$theme_dir/style.css")"
             validate_theme
           else
             theme_factory_fail "Ollama fixer pass is unavailable because Ollama was not selected for this run."

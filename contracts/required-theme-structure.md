@@ -9,5 +9,5 @@ Key points:
 - Local assets must be present in `assets/css/theme.css` and `assets/js/theme.js`.
 - Header markup must implement the Nolan-menu contract in `contracts/nolan-menu-header.md`.
 - Theme templates must share structure, class names, and content rhythm with the static preview pages.
-- Local industry-appropriate demo images must exist under `assets/images/` and be used by hero, service, portfolio/work, and visual story sections.
+- Local industry-appropriate visual assets must exist under `assets/images/` and be used by hero, service, portfolio/work, and visual story sections. SVG/vector assets are valid when the prompt asks for diagrams, interface visuals, generated artwork, or no raster photos.
 - The theme must remain installable as a normal WordPress theme ZIP.

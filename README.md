@@ -98,7 +98,7 @@ Each generated preview directory must include:
 - `work_preview.html`
 - `assets/css/preview.css`
 - `assets/js/preview.js`
-- local raster images in `assets/images/`
+- local visual assets in `assets/images/`
 
 The preview pages must visually match the WordPress templates. They should use the same header, footer, class names, section order, copy style, local images, button styles, cards, and responsive assumptions.
 

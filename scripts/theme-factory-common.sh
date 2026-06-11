@@ -354,7 +354,8 @@ const path = require('path');
 const indexPath = process.argv[2];
 const slug = process.argv[3];
 const themeName = process.argv[4];
-  const href = `themes/${slug}/index.html`;
+const href = `themes/${slug}/index.html`;
+const previewHref = `themes/${slug}/homepage_preview.html`;
 const file = fs.readFileSync(indexPath, 'utf8');
 
 if (file.includes(href)) {
@@ -368,12 +369,13 @@ const escaped = themeName
   .replace(/"/g, '&quot;');
 
 const card = [
-  '        <article class="theme-card">',
-  `          <p class="eyebrow">${slug}</p>`,
-  `          <h3>${escaped}</h3>`,
-  '          <p>Generated classic WordPress theme with a matching static preview.</p>',
-  `          <p><a href="${href}">Open preview</a></p>`,
-  '        </article>'
+  '<article class="card">',
+  `  <iframe title="${escaped} preview" src="${previewHref}" loading="lazy"></iframe>`,
+  `  <h2>${escaped}</h2>`,
+  '  <p>Generated classic WordPress theme with a matching static preview.</p>',
+  '  <div class="meta"><span class="tag">WordPress</span><span class="tag">Static preview</span></div>',
+  `  <a class="button" href="${href}">Open preview</a>`,
+  '</article>'
 ].join('\n') + '\n';
 
 let updated = file;

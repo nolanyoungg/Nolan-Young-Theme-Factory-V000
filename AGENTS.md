@@ -23,7 +23,11 @@ Additive generation runs must preserve every existing numbered generated theme, 
 
 Completed prompt history is not generated preview output. Preserve `prompts/completed/` during additive runs and reset/cleanup runs unless the user explicitly says to delete completed prompt history.
 
+Prompt templates are source material, not generated output. Preserve `prompts/theme-prompt-templates/` during generation, reset, cleanup, gallery repair, and branch cleanup work unless the user explicitly asks to change the prompt template library.
+
 Normal generation runs must create the requested slug as a fresh generated output. Do not copy, rename, or migrate an existing numbered generated theme into the new slug unless the user explicitly asks for a clone or migration test.
+
+Codex-only runs must read the active validation scripts and contracts before writing the main generated files. The first generation pass should target current validation gates directly, not discover them after a large patch. Do not copy literal example filenames from docs or contracts. Generated visual asset names must be business-specific, not `prompt-specific-visual-*`, `icon1`, or other numbered placeholders. Do not use checklist filler such as "Services Preview", "Process Preview", "Service Detail", "All Services", or `example.com` to satisfy required files. One-line template parts or static preview pages are not acceptable premium output, even when they satisfy the required tree shape.
 
 Authoritative supporting contracts:
 
@@ -527,12 +531,12 @@ docs/themes/NNN_nolan_young_theme_description/
 │   │   └── preview.js
 │   └── images/
 │       ├── README.md
-│       ├── landscape-garden-pathway.jpg
-│       ├── restaurant-plated-dish.jpg
-│       ├── construction-framing-crew.jpg
-│       ├── software-dashboard-interface.jpg
-│       ├── wellness-treatment-room.jpg
-│       └── real-estate-kitchen-detail.jpg
+│       ├── prompt-specific-visual-1.svg
+│       ├── prompt-specific-visual-2.svg
+│       ├── prompt-specific-visual-3.svg
+│       ├── prompt-specific-visual-4.svg
+│       ├── prompt-specific-visual-5.svg
+│       └── prompt-specific-visual-6.svg
 └── README.md
 ```
 
@@ -1196,7 +1200,7 @@ Must check:
 * preview JS exists
 * preview is not empty
 * preview uses local relative assets
-* preview includes local raster image assets
+* preview includes local visual assets that match the prompt; SVG/vector assets are valid when the prompt asks for them
 * preview contains required Nolan-menu data attributes
 * preview trigger buttons include ARIA controls and expanded state
 * `docs/index.html` links to preview

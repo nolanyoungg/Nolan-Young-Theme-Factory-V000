@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" role="img" aria-label="Home energy audit dashboard illustration">
+  <defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#fffdf7"/><stop offset="1" stop-color="#eef6ed"/></linearGradient></defs>
+  <rect width="900" height="620" rx="36" fill="url(#g)"/>
+  <rect x="84" y="82" width="732" height="456" rx="28" fill="#fff" stroke="#d8e2d7"/>
+  <rect x="120" y="120" width="250" height="120" rx="22" fill="#f2f7ee"/>
+  <rect x="410" y="120" width="366" height="120" rx="22" fill="#fffaf1"/>
+  <rect x="120" y="266" width="656" height="230" rx="26" fill="#fdfdf9"/>
+  <path d="M180 386c74-66 128-86 194-90 61-4 120 12 206 60 36 20 86 35 120 23" fill="none" stroke="#1f8a5b" stroke-width="16" stroke-linecap="round"/>
+  <circle cx="210" cy="178" r="36" fill="#1f8a5b"/><circle cx="304" cy="178" r="36" fill="#f4b942"/><circle cx="688" cy="178" r="36" fill="#e46f3c"/>
+  <text x="146" y="322" font-family="system-ui,sans-serif" font-size="28" fill="#17332a">Comfort score</text>
+  <text x="146" y="360" font-family="system-ui,sans-serif" font-size="62" font-weight="700" fill="#1f8a5b">74</text>
+</svg>
+
