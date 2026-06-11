@@ -23,6 +23,8 @@ Additive generation runs must preserve every existing numbered generated theme, 
 
 Completed prompt history is not generated preview output. Preserve `prompts/completed/` during additive runs and reset/cleanup runs unless the user explicitly says to delete completed prompt history.
 
+Normal generation runs must create the requested slug as a fresh generated output. Do not copy, rename, or migrate an existing numbered generated theme into the new slug unless the user explicitly asks for a clone or migration test.
+
 Authoritative supporting contracts:
 
 ```text
