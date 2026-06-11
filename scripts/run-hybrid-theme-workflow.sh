@@ -72,6 +72,14 @@ if [ "$mode" != "ollama-only" ]; then
       codex_command="codex exec"
     fi
   fi
+  original_codex_command="$codex_command"
+  codex_command="${codex_command//--model 5.4mini/--model gpt-5.4-mini}"
+  codex_command="${codex_command//-m 5.4mini/-m gpt-5.4-mini}"
+  codex_command="${codex_command//--model 5.4-mini/--model gpt-5.4-mini}"
+  codex_command="${codex_command//-m 5.4-mini/-m gpt-5.4-mini}"
+  if [ "$codex_command" != "$original_codex_command" ]; then
+    printf 'Normalized Codex model alias in CODEX_COMMAND: %s\n' "$codex_command" >&2
+  fi
   theme_factory_require_cmd "${codex_command%% *}"
 fi
 
@@ -435,15 +443,17 @@ if [ "$mode" != "ollama-only" ]; then
       printf '%s\n' '- create index.html plus all seven required preview pages'
       printf '%s\n' '- create complete runtime CSS and JavaScript; do not rely on an unbuilt Sass step'
       printf '%s\n' '- create all prompt-required local assets and release files'
+      printf '%s\n' '- create this slug as a fresh generated output; do not copy, rename, or migrate an existing numbered generated theme as the new theme unless the user explicitly asks for a clone'
       printf '%s\n' '- preserve all existing numbered generated themes, previews, ZIPs, run reports, and docs/index.html gallery links unless the prompt explicitly says this is a repo reset or zero-out run'
       printf '%s\n' '- preserve prompts/completed/ history unless the user explicitly says to delete completed prompt history'
+      printf '%s\n' '- if the prompt contains stale model or reasoning text, ignore it; the Codex command above is the authoritative model and reasoning selection'
     else
       printf '%s\n' '- finalize the existing generated theme'
       printf '%s\n' '- preserve the existing design intent unless it conflicts with the prompt or validation'
       printf '%s\n' '- do not start from scratch unless the output is unrecoverable'
     fi
     printf '%s\n' '- preserve the selected prompt direction'
-    printf '%s\n' '- if the selected prompt says "only generated showcase theme" during a normal next-theme run, interpret that as only within the new theme output; do not remove existing numbered themes or gallery cards'
+    printf '%s\n' '- if the selected prompt says "only generated showcase theme", "reset", "cleanup", or asks to delete previous outputs during a normal next-theme run, interpret that as only within the new theme output; do not remove existing numbered themes, completed prompts, run reports, ZIPs, or gallery cards'
     printf '%s\n' '- fix broken PHP, styling, preview mismatch, build issues, accessibility issues, Nolan-menu behavior, local assets, and release readiness problems'
     printf '%s\n' '- ensure all seven static preview pages exist and visually match the WordPress templates'
     printf '%s\n' '- ensure the homepage feels premium, complete, and prompt-specific'
