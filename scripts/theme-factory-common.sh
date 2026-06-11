@@ -6,6 +6,15 @@ theme_factory_repo_root() {
   cd "$script_dir/.." && pwd
 }
 
+theme_factory_load_codex_presets() {
+  local root_dir
+  root_dir="$(theme_factory_repo_root)"
+  # shellcheck source=/dev/null
+  source "$root_dir/codex/codex-presets.sh"
+}
+
+theme_factory_load_codex_presets
+
 theme_factory_fail() {
   printf 'ERROR: %s\n' "$*" >&2
   exit 1

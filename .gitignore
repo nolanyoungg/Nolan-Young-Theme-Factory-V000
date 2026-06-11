@@ -10,6 +10,7 @@ node_modules/
 *.tmp
 *.bak
 reports/runs/*/tmp/
+reports/runs/*/codex-*-raw.md
 wp-content/themes/*/node_modules/
 wp-content/themes/*/.git/
 wp-content/themes/*/npm-debug.log*

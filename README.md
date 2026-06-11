@@ -42,8 +42,16 @@ Legacy compatibility still works:
 - `THEME_FACTORY_MODE`: `hybrid`, `codex-only`, or `ollama-only`
 - `THEME_PROMPT_FILE`: path to the prompt file in `prompts/pending/`
 - `OLLAMA_MODEL`: required for Ollama modes; for example `qwen2.5-coder:14b`
-- `CODEX_COMMAND`: full Codex command prefix, for example `codex` or `codex --model gpt-5.5 --reasoning high`
+- `CODEX_COMMAND`: full Codex command prefix, if you want to override the repo defaults entirely
+- `CODEX_MODEL_DEFAULT`: repo-wide Codex model default, currently `gpt-5.4-mini`
+- `CODEX_REASONING_DEFAULT`: repo-wide Codex reasoning default, currently `low`
+- `CODEX_MODEL_GENERATION` / `CODEX_REASONING_GENERATION`: overrides for the main theme generation pass
+- `CODEX_MODEL_FINAL` / `CODEX_REASONING_FINAL`: overrides for the Codex final-pass command
+- `CODEX_MODEL_REVIEW` / `CODEX_REASONING_REVIEW`: overrides for review/fix contexts
+- `CODEX_MODEL_FIXER` / `CODEX_REASONING_FIXER`: overrides for explicit fixer passes
 - `THEME_SLUG`: override the next versioned slug if you need to target a specific generated run
+
+If you want the whole repo to use `gpt-5.5` instead, set `CODEX_MODEL_DEFAULT=gpt-5.5` and raise `CODEX_REASONING_DEFAULT` as needed. The context-specific overrides take precedence over the repo-wide defaults.
 
 ## Ollama-Only Example
 

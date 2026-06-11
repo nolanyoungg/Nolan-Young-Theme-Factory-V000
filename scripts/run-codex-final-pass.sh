@@ -13,7 +13,10 @@ prompt_file="${2:-}"
 [ -n "$prompt_file" ] || theme_factory_fail "Missing prompt file."
 [ -f "$prompt_file" ] || theme_factory_fail "Prompt file not found: $prompt_file"
 
-codex_command="${CODEX_COMMAND:-codex exec}"
+codex_command="${CODEX_COMMAND:-$(theme_factory_codex_command_for_context final-pass)}"
+if [ -z "${CODEX_COMMAND:-}" ] && [ -n "${codex_command:-}" ]; then
+  printf 'Using default Codex final-pass command: %s\n' "$codex_command"
+fi
 theme_factory_require_cmd "${codex_command%% *}"
 
 run_dir="$(cd "$(dirname "$prompt_file")" && pwd)"

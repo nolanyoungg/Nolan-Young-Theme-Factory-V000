@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 780" role="img" aria-labelledby="title desc">
+  <title id="title">Internal tools interface</title>
+  <desc id="desc">A compact tool interface with forms, tables, and task cards.</desc>
+  <rect width="1200" height="780" rx="36" fill="#0a111b"/>
+  <rect x="52" y="52" width="1096" height="676" rx="28" fill="#091523" stroke="#23435e" stroke-width="2"/>
+  <rect x="92" y="96" width="1016" height="86" rx="18" fill="#0f1f31"/>
+  <rect x="92" y="208" width="330" height="470" rx="20" fill="#0f1f31"/>
+  <rect x="446" y="208" width="662" height="470" rx="20" fill="#0f1f31"/>
+  <rect x="126" y="126" width="220" height="20" rx="10" fill="#16334e"/><rect x="362" y="126" width="110" height="20" rx="10" fill="#16334e"/><rect x="492" y="126" width="180" height="20" rx="10" fill="#16334e"/>
+  <rect x="126" y="250" width="252" height="24" rx="12" fill="#1b3651"/><rect x="126" y="292" width="220" height="16" rx="8" fill="#18324b"/><rect x="126" y="328" width="278" height="16" rx="8" fill="#18324b"/><rect x="126" y="364" width="194" height="16" rx="8" fill="#18324b"/>
+  <rect x="126" y="418" width="278" height="110" rx="18" fill="#13263d"/><rect x="126" y="548" width="278" height="92" rx="18" fill="#13263d"/>
+  <g fill="none" stroke="#35556f" stroke-width="2">
+    <path d="M482 256h556M482 312h556M482 368h556M482 424h556M482 480h556"/>
+  </g>
+  <g fill="#55d6ff">
+    <circle cx="524" cy="284" r="8"/><circle cx="524" cy="340" r="8"/><circle cx="524" cy="396" r="8"/><circle cx="524" cy="452" r="8"/><circle cx="524" cy="508" r="8"/>
+  </g>
+  <path d="M582 286h344M582 342h286M582 398h398M582 454h238M582 510h334" stroke="#b8ff5f" stroke-width="5" stroke-linecap="round"/>
+</svg>
