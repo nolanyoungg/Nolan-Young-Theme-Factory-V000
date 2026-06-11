@@ -1,0 +1,1 @@
+<section class="section page-content"><h2><?php esc_html_e('No matching SignalForge resources found.', 'nolan-young-saas'); ?></h2><p><?php esc_html_e('Try another search or open the services page for a structured path forward.', 'nolan-young-saas'); ?></p></section>
