@@ -131,11 +131,12 @@ append_codex_efficiency_context() {
     printf '%s\n' '- Prefer incremental file writes that leave inspectable progress over holding the entire generated site in a long hidden reasoning block.'
     printf '%s\n' '- Do not compose the whole site as one large hidden generator before writing validator-relevant files.'
     printf '%s\n' '- After the progress marker, immediately write the validator-critical roots and assets in small batches: style.css, functions.php, header.php, footer.php, front-page.php, assets/css/theme.css, assets/js/theme.js, docs/themes/'"$slug"'/index.html, docs/themes/'"$slug"'/homepage_preview.html, docs/themes/'"$slug"'/assets/css/preview.css, and docs/themes/'"$slug"'/assets/js/preview.js.'
-    printf '%s\n' '- Then fill the remaining required template parts, preview pages, SVG assets, docs/index.html gallery card, package ZIP, and validation fixes.'
+    printf '%s\n' '- Then fill the remaining required template parts, preview pages, prompt-specific local assets, package ZIP, and validation fixes.'
+    printf '%s\n' '- Do not edit docs/index.html. The workflow script owns the shared gallery update after generated files exist.'
     printf '%s\n' '- Do not read memory files under /Users/nolany/.codex/memories during this generation run.'
     printf '%s\n' '- Do not list or inspect full existing generated theme trees unless validation failure output specifically points to one.'
     printf '%s\n' '- Treat the repository contracts and this generated prompt as the working checklist. Read source files only when an exact contract detail is needed.'
-    printf '%s\n' '- Preserve existing generated outputs as shared release state; only edit the requested new slug, docs/index.html, run reports, and ZIP output for this run.'
+    printf '%s\n' '- Preserve existing generated outputs as shared release state; only edit the requested new slug, run reports, and ZIP output for this run.'
     printf '%s\n' '- If you need a helper generator script for large file output, keep it under reports/runs/'"$slug"'/ and use it immediately to write the generated files.'
     printf '%s\n' '- After writing files, run the existing scripts and fix only concrete validation failures.'
     printf '\nExisting generated preview cards to preserve in docs/index.html:\n'
@@ -280,7 +281,7 @@ Task:
 - implement Nolan-menu behavior in local preview JS
 - use only local assets
 - emit only file blocks using the required protocol
-- update docs/index.html so it links to the preview
+- do not edit docs/index.html; the workflow script updates the shared preview gallery
 
 Theme slug: $slug
 Selected Ollama model: ${ollama_model:-unknown}
@@ -470,7 +471,8 @@ if [ "$mode" != "ollama-only" ]; then
       printf '%s\n' '- create complete runtime CSS and JavaScript; do not rely on an unbuilt Sass step'
       printf '%s\n' '- create all prompt-required local assets and release files'
       printf '%s\n' '- create this slug as a fresh generated output; do not copy, rename, or migrate an existing numbered generated theme as the new theme unless the user explicitly asks for a clone'
-      printf '%s\n' '- preserve all existing numbered generated themes, previews, ZIPs, run reports, and docs/index.html gallery links unless the prompt explicitly says this is a repo reset or zero-out run'
+      printf '%s\n' '- do not edit docs/index.html; the workflow script updates the shared preview gallery after generated files exist'
+      printf '%s\n' '- preserve all existing numbered generated themes, previews, ZIPs, run reports, and gallery links unless the prompt explicitly says this is a repo reset or zero-out run'
       printf '%s\n' '- preserve prompts/completed/ history unless the user explicitly says to delete completed prompt history'
       printf '%s\n' '- if the prompt contains stale model or reasoning text, ignore it; the Codex command above is the authoritative model and reasoning selection'
     else
@@ -497,6 +499,7 @@ if [ "$mode" != "ollama-only" ]; then
   run_codex_final_pass "$codex_prompt"
   run_npm_build
   package_theme
+  theme_factory_update_gallery_index "$slug" "$(theme_factory_theme_name_from_style "$theme_dir/style.css")"
 
   if ! validate_theme; then
     printf '\nValidation failed after Codex pass.\n' >&2
@@ -516,6 +519,7 @@ if [ "$mode" != "ollama-only" ]; then
           run_codex_final_pass "$fixer_prompt"
           run_npm_build
           package_theme
+          theme_factory_update_gallery_index "$slug" "$(theme_factory_theme_name_from_style "$theme_dir/style.css")"
           validate_theme
           ;;
         2)
@@ -525,6 +529,7 @@ if [ "$mode" != "ollama-only" ]; then
             run_ollama_stage review-fix "$fixer_prompt"
             run_npm_build
             package_theme
+            theme_factory_update_gallery_index "$slug" "$(theme_factory_theme_name_from_style "$theme_dir/style.css")"
             validate_theme
           else
             theme_factory_fail "Ollama fixer pass is unavailable because Ollama was not selected for this run."
