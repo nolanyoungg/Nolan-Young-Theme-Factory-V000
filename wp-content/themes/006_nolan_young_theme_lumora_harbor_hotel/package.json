@@ -1,0 +1,8 @@
+{
+  "name": "006_nolan_young_theme_lumora_harbor_hotel",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "node build/build.mjs"
+  }
+}

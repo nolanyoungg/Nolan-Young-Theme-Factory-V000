@@ -154,7 +154,9 @@ else
 fi
 
 if [ -d "$preview_dir/assets/images" ]; then
-  image_count="$(find "$preview_dir/assets/images" "$preview_dir/assets/icons" -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' -o -iname '*.svg' \) | wc -l | tr -d ' ')"
+  asset_dirs=("$preview_dir/assets/images")
+  [ -d "$preview_dir/assets/icons" ] && asset_dirs+=("$preview_dir/assets/icons")
+  image_count="$(find "${asset_dirs[@]}" -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' -o -iname '*.svg' \) | wc -l | tr -d ' ')"
   [ "$image_count" -ge 6 ] || fail "Preview must include at least 6 local visual assets"
 else
   fail "Missing preview image directory"
